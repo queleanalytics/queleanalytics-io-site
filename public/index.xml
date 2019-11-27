@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>BLOG DE QUELEANALYTICS</title>
+    <link>/</link>
+    <description>Recent content on BLOG DE QUELEANALYTICS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>fr</language>
+    <lastBuildDate>Tue, 26 Nov 2019 00:00:57 -0700</lastBuildDate>
+    
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Introduction</title>
+      <link>/posts/2019-11-27-r-rmarkdown/</link>
+      <pubDate>Tue, 26 Nov 2019 00:00:57 -0700</pubDate>
+      
+      <guid>/posts/2019-11-27-r-rmarkdown/</guid>
+      <description>Nous mettrons ici des sujets, divers et variés, autant en français qu’en anglais que nous traiterons.
+Data Analytics, QueleAnalytics↩
+</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>/about/</link>
+      <pubDate>Sun, 05 May 2019 21:48:51 -0700</pubDate>
+      
+      <guid>/about/</guid>
+      <description>Nos services sur mésure. Offre de Consultance
+ Classification automatique des mails entrant pour déterminer leur nature (traitement des sinistres, suppression des contrats, informations sur son contrat,… renseignements généraux) grâce à l’utilisation du NLP (Natural Language Processing) ou TAL (Traitement Automatique du Langage) : « Topics detection », « mails Mining and Parsing », « mail Forwarding », « sentiment analysis »,…
+Le conseil en stratégie à  ont décidé de se rapprocher afin de pouvoir développer 4 domaines d’expertise qui, selon l’agence, constitueront les nouveaux métiers de demain : Predictive Marketing, Intelligence Artificielle, le machine learning et le développement de nouvelles solutions média.</description>
+    </item>
+    
+    <item>
+      <title>Contact</title>
+      <link>/contact/</link>
+      <pubDate>Sun, 05 May 2019 21:48:51 -0700</pubDate>
+      
+      <guid>/contact/</guid>
+      <description>Prenez Contact avec nous
+ Nous venons vous exposer notre phylosophie analytique et avaluer vos besoins avec plaisir sans aucun engagement.
+Mail : queleanalytics@gmail.com
+Tel : 04 86 82 84 28</description>
+    </item>
+    
+    <item>
+      <title>Nos services sur mésure</title>
+      <link>/services/</link>
+      <pubDate>Sun, 05 May 2019 21:48:51 -0700</pubDate>
+      
+      <guid>/services/</guid>
+      <description>Nous vous accompagnons pour de nombreuses décisions stratégiques. L&amp;rsquo;analyse de la donnée est un vaste domaine faisant intervenir de multiples compétences techniques et fonctionnelles. Nous intervenons tout au long de vos projets pour vous conseiller en amont, vous accompagner dans la réalisation et trouver les réponses à vos problématiques quotidiennes.
+Stratégie Data  Un accompagnement sur mésure selon nos diagnostiques et vos besoins pour donner de la valeur a vos données.</description>
+    </item>
+    
+    <item>
+      <title>Nous contacter</title>
+      <link>/nous-contacter/</link>
+      <pubDate>Sun, 05 May 2019 21:48:51 -0700</pubDate>
+      
+      <guid>/nous-contacter/</guid>
+      <description>Contacter. Contacter
+ Prenez contact avec nous, nous venons vous exposez notre phylosophie analytique mail :queleaanalytics@gmail.com tel : 04 86 82 84 28</description>
+    </item>
+    
+    <item>
+      <title>offre de Services</title>
+      <link>/offres-de-services/</link>
+      <pubDate>Sun, 05 May 2019 21:48:51 -0700</pubDate>
+      
+      <guid>/offres-de-services/</guid>
+      <description>Nos services sur mesure. Offre de Consultance
+ Classification automatique des mails entrant pour déterminer leur nature (traitement des sinistres, suppression des contrats, informations sur son contrat,… renseignements généraux) grâce à l’utilisation du NLP (Natural Language Processing) ou TAL (Traitement Automatique du Langage) : « Topics detection », « mails Mining and Parsing », « mail Forwarding », « sentiment analysis »,…
+Le conseil en stratégie à  ont décidé de se rapprocher afin de pouvoir développer 4 domaines d’expertise qui, selon l’agence, constitueront les nouveaux métiers de demain : Predictive Marketing, Intelligence Artificielle, le machine learning et le développement de nouvelles solutions média.</description>
+    </item>
+    
+    <item>
+      <title>QueleA</title>
+      <link>/quelea/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/quelea/</guid>
+      <description>1: QueleA, Contexte et Génese QueleA ! QueleA est né de mon expérience en data analytics.
+Quel est mon vécu en data Analytics ?
+L’échec quasi systématique des équipes et des projets analytics en entreprise.
+L’objectif de QueleA est de pouvoir aider dans la transition vers la transformation digitale, en construisant une manière de penser « Analytics » durable.
+Et pourquoi QueleA ?
+Depuis tout petit je suis fasciné par ce petit oiseau.</description>
+    </item>
+    
+  </channel>
+</rss>

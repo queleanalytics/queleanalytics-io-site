@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RStudio on BLOG DE QUELEANALYTICS</title>
+    <link>/tags/rstudio/</link>
+    <description>Recent content in RStudio on BLOG DE QUELEANALYTICS</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>fr</language>
+    <lastBuildDate>Tue, 26 Nov 2019 00:00:57 -0700</lastBuildDate>
+    
+	<atom:link href="/tags/rstudio/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Introduction</title>
+      <link>/posts/2019-11-27-r-rmarkdown/</link>
+      <pubDate>Tue, 26 Nov 2019 00:00:57 -0700</pubDate>
+      
+      <guid>/posts/2019-11-27-r-rmarkdown/</guid>
+      <description>Nous mettrons ici des sujets, divers et variés, autant en français qu’en anglais que nous traiterons.
+Data Analytics, QueleAnalytics↩
+</description>
+    </item>
+    
+  </channel>
+</rss>
