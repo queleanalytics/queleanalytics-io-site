@@ -9,11 +9,11 @@ description = "QueleA est né"
 
 
 
-# 1: QueleA, Contexte et Génese 
+# 1: QueleA, Contexte et Genese 
 ![](/images/quelea_context_genese.png)
 <p style="color:red"> QueleA ! </p>
 QueleA est né de mon  expérience en data analytics.    
-Quel est mon vécu en data Analytics ?    
+Quel est mon vécu en data danalytics ?    
 L’échec quasi systématique des équipes et des projets analytics en entreprise.  
 L’objectif de QueleA est de pouvoir aider dans la transition vers la transformation digitale, en  construisant une manière de penser « Analytics » durable.
 
@@ -57,12 +57,12 @@ Je suis Maurice TEKO, Data scientist. Statisticien de formation. J'ai commencé 
 ![](/images/un_processus_enquatre etapes_1.png)
 
 
-<p style="color:red"> Ces quatre étapes clés sont Splittées en plusieurs sous étapes clés qui résument la phylosophie de QueleA pour instaurer une culture "data driven" perreine. </p>
+<p style="color:red"> Ces quatre étapes clés sont divisées en plusieurs sous étapes  qui résument la philosophie de QueleA pour instaurer une culture "data driven" perène. </p>
 
 ![](/images/un_processus_enquatre etapes_2.png)
 
 
- Rencontrons et nous nous ferons le plaisir de vous détailler tous ces silos.
+ Rencontrons nous et nous nous ferons un plaisir de vous détailler tous ce processus.
  
 # 3: QueleA, comprendre vos besoins 
   
@@ -78,7 +78,7 @@ L’objectif de QueleA est simple : Vous accompagner et vous aider à introduire
 
 <!--  ![](/files/cv.pdf){width=120%} -->
  
-N'hesitez pas a nous appeler pour se rencontrer et discuter ensemble de notre approche et  de la manière de vous faire profiter de vos données et durablement.
+N'hesitez pas a nous appeler pour se rencontrer et discuter ensemble de notre approche et de la manière de vous faire profiter de vos données durablement.
  
   ![](/images/quelea_towards_analytics.png)
   

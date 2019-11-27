@@ -17,7 +17,7 @@ QueleA's goal is to help in the transition towards digital transformation by bui
 
 
  <p style="color:red"> And why the name QueleA ?</p> 
-Since I was kid, I am fascinated by this little bird :Quelea. It's weight is between 15 and 20 g and it measures between 12 to 13 cm long, it is also called red-beaked worker. I could sit for hours and watch them. See their determination, their tenacity to overcome their goals. A tireless bird, deploying all its energy continuously at work, the Quelea is a species known for it's resistance.
+Since I was kid, I am fascinated by this little bird :Quelea. Its weight is between 15 and 20 g and it measures between 12 to 13 cm long, it is also called red-beaked worker. I could sit for hours watching them. See their determination, their tenacity to overcome their goals. A tireless bird, deploying all its energy continuously at work, the Quelea is a species known for it's resistance.
 
  <p style="color:red"> Little bird, huge impacts </p> 
 Although they prefer the seeds of wild grasses to those of cultivated plants, these birds represent, because of their large numbers, a constant threat to fields of sorghum, wheat, barley, millet and rice. The quelea eats an average of 10 grams of seed a day - about half of its weight - which means that a colony of two million can eat up to 20 tons of seeds in one day, whole fields alone. 

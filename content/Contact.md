@@ -5,6 +5,6 @@ title: Contact
 
 
 ## <p style="color:pink"> Prenez Contact avec nous</p>
-Nous venons vous exposer notre phylosophie analytique et avaluer vos besoins avec plaisir sans aucun engagement.  
+Nous venons vous exposer notre philosophie analytique et evaluer vos besoins avec plaisir sans aucun engagement.  
 Mail : queleanalytics@gmail.com  
 Tel  : 04 86 82 84 28  
