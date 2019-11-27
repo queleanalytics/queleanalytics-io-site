@@ -1,0 +1,160 @@
+baseurl = "https://queleanalytics.rbind.io"
+title = "QueleAnalytics"
+theme = "hugo-coder-portfolio"
+
+DefaultContentLanguage = "fr"
+
+
+paginate = 20
+
+pygmentsstyle = "b2"
+pygmentscodefences = true
+pygmentscodefencesguesssyntax = true
+pygmentsUseClasses = true
+
+disqusShortname = "yourdiscussshortname"
+
+[params]
+    author = "Maurice TEKO"
+    description = "Blog de QueleAnalytics"
+    keywords = "blog, data scientist, queleanalytics"
+    info = "QueleA est né"
+    avatarurl = "images/quelea_page_de_garde.png"
+    footercontent = "Maurice TEKO"
+    fixedbarContent = "voulez vous me connaitre d'avantage ? cliquez sur un de ces logos →  "
+    fixedbarContentAfter = "Un tout grand merci! Et partagez si vous aimez → "
+
+    hideCredits = true
+    hideCopyright = true
+
+    # Bottom sns share
+    snsShare = true
+    # Popular sns share
+    # if you want add sns. please message!
+    enableTwitterShare = true
+    enableFacebookShare = true
+    enableLinkedInShare = true
+
+    thumbnail = "images/tn.png" 
+
+    # Custom CSS
+    custom_css = []
+
+    # Alignment of Mobile Menu items
+    itemscentered = true
+
+    # RTL support
+    rtl = false
+# Multilanguage mode
+    langseparator = "|"
+
+[[params.social]]
+    name = "Github"
+    icon = "fab fa-github"
+    weight = 1
+    url = "https://github.com/tekomaurice/"
+[[params.social]]
+    name = "Twitter"
+    icon = "fab fa-twitter"
+    weight = 2
+    url = "https://twitter.com/MauriceDataLab/"
+[[params.social]]
+    name = "LinkedIn"
+    icon = "fab fa-linkedin"
+    weight = 3
+    url = "https://www.linkedin.com/in/mauriceteko/"
+
+[languages]
+    [languages.fr]
+        languagecode = "fr"
+        languagename = "Français" # The language name to be displayed in the selector.
+        title = "BLOG DE QUELEANALYTICS"
+
+        # You can configure the theme parameter for each language.
+        [languages.fr.params]
+            author = "QueleAnalytics"
+            info = "UNE AUTRE VISION DE LA SCIENCE DES DONNEES" 
+            description = "Blog de QueleAnalytics"
+            keywords = "maurice ,data scientist, analytics"
+
+        [languages.fr.menu] # It is possible to change the menu too.
+
+            [[languages.fr.menu.main]]
+                name = "QueleA"
+                weight = 1.0
+                url = "QueleA"
+
+            [[languages.fr.menu.main]]
+              name = "posts"
+                url = "/posts"
+               weight = 3.0
+
+
+            [[languages.fr.menu.main]]
+                 name = "Services"
+            url = "/Services/"
+            weight = 2.0
+    
+            [[languages.fr.menu.main]]
+            name = "Contact"
+                url = "/Contact/"
+            weight = 4
+            
+            [[languages.fr.menu.main]]
+                 name = "CV"
+             url = "/docs/cv.pdf"
+                weight = 5
+ 
+         [[languages.fr.menu.main]]
+            name = "Linkedin"
+            
+            url = "https://be.linkedin.com/in/mauriceteko"
+            weight = 6
+            
+        [[languages.fr.menu.main]]
+            name = "Twitter"
+            url = "https://twitter.com/MauriceDataLab"
+            weight = 7
+
+    [languages.en]
+        languagecode = "en"
+        languagename = "English"
+        title = "QueleAnalytics Blog"
+
+        [languages.en.params]
+            author = "to be data-driven and act on your analytics vision"
+            description = "How to be data-driven and act on your analytics vision"
+           keywords = "blog,data scientist,queleanalytics"
+            info = "QueleA is Born"
+
+        [languages.en.menu]
+            [[languages.en.menu.main]]
+                name = "QueleA is born"
+                weight = 1.0
+                url = "QueleA"
+
+            [[languages.en.menu.main]]
+                 name = "Offers"
+            weight = 2.0
+                url = "Services"
+                
+                [[languages.en.menu.main]]
+            name = "Contact"
+                url = "Contact"
+            weight = 4
+            
+            [[languages.en.menu.main]]
+                 name = "CV"
+             url = "/docs/cv.pdf"
+                weight = 5
+ 
+         [[languages.en.menu.main]]
+            name = "Linkedin"
+            url = "https://be.linkedin.com/in/mauriceteko"
+            weight = 6
+            
+        [[languages.en.menu.main]]
+            name = "Twitter"
+            url = "https://twitter.com/MauriceDataLab"
+            weight = 7
+                
