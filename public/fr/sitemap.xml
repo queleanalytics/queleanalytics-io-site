@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2019-11-26T00:00:57-07:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="/en/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="/"
+                />
+  </url>
+  
+  <url>
+    <loc>/posts/2019-11-27-r-rmarkdown/</loc>
+    <lastmod>2019-11-26T00:00:57-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/</loc>
+    <lastmod>2019-11-26T00:00:57-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/r/</loc>
+    <lastmod>2019-11-26T00:00:57-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/rstudio/</loc>
+    <lastmod>2019-11-26T00:00:57-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2019-11-26T00:00:57-07:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="/en/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="/tags/"
+                />
+  </url>
+  
+  <url>
+    <loc>/about/</loc>
+    <lastmod>2019-05-05T21:48:51-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/contact/</loc>
+    <lastmod>2019-05-05T21:48:51-07:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="/en/contact/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="/contact/"
+                />
+  </url>
+  
+  <url>
+    <loc>/services/</loc>
+    <lastmod>2019-05-05T21:48:51-07:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="/en/services/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="/services/"
+                />
+  </url>
+  
+  <url>
+    <loc>/nous-contacter/</loc>
+    <lastmod>2019-05-05T21:48:51-07:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="/en/nous-contacter/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="/nous-contacter/"
+                />
+  </url>
+  
+  <url>
+    <loc>/offres-de-services/</loc>
+    <lastmod>2019-05-05T21:48:51-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="/en/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="/categories/"
+                />
+  </url>
+  
+  <url>
+    <loc>/quelea/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="/en/quelea/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="/quelea/"
+                />
+  </url>
+  
+</urlset>

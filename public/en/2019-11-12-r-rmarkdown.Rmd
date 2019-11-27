@@ -1,0 +1,11 @@
+---
+date: "2019-11-26T00:00:57-07:00"
+title: "Sujets a traiter"
+output: 
+    toc: true
+---
+
+# Introduction
+
+Nous mettrons ici des sujets, divers et variés, autant en français qu'en anglais que nous traiterons.
+

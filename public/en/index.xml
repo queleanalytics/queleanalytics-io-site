@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>QueleAnalytics Blog</title>
+    <link>/en/</link>
+    <description>Recent content on QueleAnalytics Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sun, 05 May 2019 21:48:51 -0700</lastBuildDate>
+    
+	<atom:link href="/en/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Contact</title>
+      <link>/en/contact/</link>
+      <pubDate>Sun, 05 May 2019 21:48:51 -0700</pubDate>
+      
+      <guid>/en/contact/</guid>
+      <description>Prenez Contact avec nous
+ You want more about our analytical phylosophy. Let&amp;rsquo;s meet and evaluate your needs with pleasure without any commitment.
+Mail : queleaanalytics@gmail.com
+Tel : 04 86 82 84 28</description>
+    </item>
+    
+    <item>
+      <title>Contact us</title>
+      <link>/en/nous-contacter/</link>
+      <pubDate>Sun, 05 May 2019 21:48:51 -0700</pubDate>
+      
+      <guid>/en/nous-contacter/</guid>
+      <description>Contacter. Contacter
+ With plaisure, we come and share with you our enthusiasm and our phylosophy to be &amp;ldquo;data driven&amp;rdquo; mail :queleaanalytics@gmail.com tel : 04 86 82 84 28</description>
+    </item>
+    
+    <item>
+      <title>Offers</title>
+      <link>/en/services/</link>
+      <pubDate>Sun, 05 May 2019 21:48:51 -0700</pubDate>
+      
+      <guid>/en/services/</guid>
+      <description>We support you for your strategic decisions. Data analysis is a broad area involving multiple technical and functional skills. We intervene throughout your projects to advise you upstream, assist you in the realization and find the answers to your daily problems.
+Our offers. Data strategy  A tailored support according to our diagnostics and your needs to give value to your data. We will help you face the new professions of tomorrow: Predictive Marketing, Artificial Intelligence, machine learning and the development of new media solutions.</description>
+    </item>
+    
+    <item>
+      <title>QueleA is born</title>
+      <link>/en/quelea/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/en/quelea/</guid>
+      <description>1: QueleA, Context and genesis QueleA ! QueleA was born within my experience in data analytics. What is my experience in data Analytics ?
+The almost systematic failure of teams and analytics projects in business.
+QueleA&amp;rsquo;s goal is to help in the transition towards digital transformation by building a sustainable &amp;ldquo;Analytics&amp;rdquo; way of thinking.
+And why the name QueleA ?
+Since I was kid, I am fascinated by this little bird :Quelea.</description>
+    </item>
+    
+  </channel>
+</rss>
