@@ -21,8 +21,8 @@ disqusShortname = "yourdiscussshortname"
     info = "QueleA est né"
     avatarurl = "images/quelea_page_de_garde.png"
     footercontent = "Maurice TEKO"
-    fixedbarContent = "voulez vous me connaitre d'avantage ? cliquez sur un de ces logos →  "
-    fixedbarContentAfter = "Un tout grand merci! Et partagez si vous aimez → "
+    fixedbarContent = "voulez vous me connaitre d'avantage ? cliquez sur un de ces logos"
+    fixedbarContentAfter = "Un tout grand merci! Et partagez si vous aimez"
 
     hideCredits = true
     hideCopyright = true
