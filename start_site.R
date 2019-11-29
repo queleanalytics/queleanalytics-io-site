@@ -1,4 +1,9 @@
 
+# 
+# thumbnail = "images/tn.png"
+
+
+
 # library(rmarkdown)
 # library(knitr)
 # library(scales)

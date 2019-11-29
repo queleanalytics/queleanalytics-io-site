@@ -21,21 +21,21 @@ disqusShortname = "yourdiscussshortname"
     info = "QueleA est né"
     avatarurl = "images/quelea_page_de_garde.png"
     footercontent = "Maurice TEKO"
-    fixedbarContent = "voulez vous me connaitre d'avantage ? cliquez sur un de ces logos"
-    fixedbarContentAfter = "Un tout grand merci! Et partagez si vous aimez"
+    fixedbarContent = "voulez vous me connaitre d'avantage? Mes coordonnées sont dans CONTACT.  "
+    fixedbarContentAfter = "Un tout grand merci! Et partagez si vous aimez."
 
     hideCredits = true
     hideCopyright = true
 
     # Bottom sns share
-    snsShare = true
+    snsShare = false
     # Popular sns share
     # if you want add sns. please message!
-    enableTwitterShare = true
-    enableFacebookShare = true
-    enableLinkedInShare = true
+    enableTwitterShare = false
+    enableFacebookShare = false
+    enableLinkedInShare = false
 
-    thumbnail = "images/tn.png" 
+    thumbnail = "images/quelea_towards_analytics.png" 
 
     # Custom CSS
     custom_css = []
@@ -52,7 +52,7 @@ disqusShortname = "yourdiscussshortname"
     name = "Github"
     icon = "fab fa-github"
     weight = 1
-    url = "https://github.com/tekomaurice/"
+    url = "https://github.com/queleanalytics/queleanalytics-io-site/"
 [[params.social]]
     name = "Twitter"
     icon = "fab fa-twitter"
@@ -108,12 +108,12 @@ disqusShortname = "yourdiscussshortname"
          [[languages.fr.menu.main]]
             name = "Linkedin"
             
-            url = "https://be.linkedin.com/in/mauriceteko"
+            url = "https://be.linkedin.com/in/mauriceteko/"
             weight = 6
             
         [[languages.fr.menu.main]]
             name = "Twitter"
-            url = "https://twitter.com/MauriceDataLab"
+            url = "https://twitter.com/MauriceDataLab/"
             weight = 7
 
     [languages.en]
@@ -150,11 +150,11 @@ disqusShortname = "yourdiscussshortname"
  
          [[languages.en.menu.main]]
             name = "Linkedin"
-            url = "https://be.linkedin.com/in/mauriceteko"
+            url = "https://be.linkedin.com/in/mauriceteko/"
             weight = 6
             
         [[languages.en.menu.main]]
             name = "Twitter"
-            url = "https://twitter.com/MauriceDataLab"
+            url = "https://twitter.com/MauriceDataLab/"
             weight = 7
                 
