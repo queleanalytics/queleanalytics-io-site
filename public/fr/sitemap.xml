@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>/posts/2019-11-27-r-rmarkdown/</loc>
+    <lastmod>2019-11-26T00:00:57-07:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/</loc>
     <lastmod>2019-11-26T00:00:57-07:00</lastmod>
     <xhtml:link
@@ -15,11 +20,6 @@
                 hreflang="fr"
                 href="/"
                 />
-  </url>
-  
-  <url>
-    <loc>/posts/2019-11-27-r-rmarkdown/</loc>
-    <lastmod>2019-11-26T00:00:57-07:00</lastmod>
   </url>
   
   <url>
