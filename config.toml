@@ -16,7 +16,7 @@ disqusShortname = "yourdiscussshortname"
 
 [params]
     author = "Maurice TEKO"
-    description = "Blog de QueleAnalytics"
+    description = "Le Blog de QueleAnalytics"
     keywords = "blog, data scientist, queleanalytics"
     info = "QueleA est né"
     avatarurl = "images/quelea_page_de_garde.png"
@@ -68,14 +68,14 @@ disqusShortname = "yourdiscussshortname"
     [languages.fr]
         languagecode = "fr"
         languagename = "Français" # The language name to be displayed in the selector.
-        title = "BLOG DE QUELEANALYTICS"
+        title = "LE BLOG DE QUELEANALYTICS"
 
         # You can configure the theme parameter for each language.
         [languages.fr.params]
             author = "QueleAnalytics"
             info = "UNE AUTRE VISION DE LA SCIENCE DES DONNEES" 
-            description = "Blog de QueleAnalytics"
-            keywords = "maurice ,data scientist, analytics"
+            description = "Le Blog de QueleAnalytics"
+            keywords = "maurice, data scientist, analytics"
 
         [languages.fr.menu] # It is possible to change the menu too.
 
