@@ -5,7 +5,7 @@ theme = "hugo-coder-portfolio"
 DefaultContentLanguage = "fr"
 
 
-paginate = 20
+paginate = 30
 
 pygmentsstyle = "b2"
 pygmentscodefences = true
