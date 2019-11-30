@@ -13,7 +13,7 @@ description = "QueleA est né"
 ![](/images/quelea_context_genese.png)
 <p style="color:red"> QueleA ! </p>
 QueleA est né de mon  expérience en data analytics.    
-Quel est mon vécu en data danalytics ?    
+Quel est mon vécu en data analytics?  
 L’échec quasi systématique des équipes et des projets analytics en entreprise.  
 L’objectif de QueleA est de pouvoir aider dans la transition vers la transformation digitale, en  construisant une manière de penser « Analytics » durable.
 
@@ -25,7 +25,7 @@ Depuis tout petit je suis fasciné par ce petit oiseau. Son poids est compris en
 
  <p style="color:red"> Petit oiseau, énormes impacts </p> 
 Bien qu’ils préfèrent les graines des herbes sauvages à celles des plantes cultivées, ces oiseaux représentent, du fait de leur grand nombre, une menace constante pour les champs de sorgho, de blé, d’orge, de mil et de riz.  Le quelea mange en moyenne 10 grammes de graines par jour – environ la moitié de son poids – ce qui signifie qu’une colonie de deux millions peut dévorer jusqu’à 20 tonnes de graines en un seul jour, des champs entiers à eux seuls. 
-QueleA est petit mais à d'énormes impacts. 
+QueleA est petit mais a d'énormes impacts. 
 
  <p style="color:red"> Quelques chiffres et études </p> 
 Malgré tous les efforts et les investissements mis en place, force est de constater que les entreprises se heurtent à beaucoup de réticence dans leur volonté de devenir « Data-driven ». Que ce soit pour amorcer une transition numérique, ou simplement réagir à la concurrence, un bon nombre de société souhaitent s’appuyer sur la collecte et l’analyse de données pour les guider dans leur prise de décision. Comme l’explique le récent sondage de NewVantage Patners, « Big Data and AI Executive Survey » (étude menée auprès de 64 grandes entreprises), la plupart des organisations échouent à devenir « Data-driven ». 
@@ -57,7 +57,7 @@ Je suis Maurice TEKO, Data scientist. Statisticien de formation. J'ai commencé 
 ![](/images/un_processus_enquatre etapes_1.png)
 
 
-<p style="color:red"> Ces quatre étapes clés sont divisées en plusieurs sous étapes  qui résument la philosophie de QueleA pour instaurer une culture "data driven" perène. </p>
+<p style="color:red"> Ces quatre étapes clés sont divisées en plusieurs sous étapes  qui résument la philosophie de QueleA pour instaurer une culture "data driven" pérenne. </p>
 
 ![](/images/un_processus_enquatre etapes_2.png)
 
