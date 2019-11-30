@@ -80,6 +80,6 @@ L’objectif de QueleA est simple : Vous accompagner et vous aider à introduire
  
 N'hesitez pas a nous appeler pour se rencontrer et discuter ensemble de notre approche et de la manière de vous faire profiter de vos données durablement.
  
-  ![](/images/quelea_towards_analytics.png)
+  ![](/images/quelea_page_de_garde.png)
   
 ---------------------------

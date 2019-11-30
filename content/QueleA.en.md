@@ -73,6 +73,6 @@ The objective of QueleA is simple as unique : To support you and help you to gra
  
 
 Feel free to call us to meet and discuss together our approach and how to make you benefit from your data and sustainably. 
-  ![](/images/quelea_towards_analytics.png)
+  ![](/images/quelea_page_de_garde.png)
   
 ---------------------------
