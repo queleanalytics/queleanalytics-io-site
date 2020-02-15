@@ -1,0 +1,541 @@
+---
+title: 'Predict Wine quality with data analytics (Part 3)'
+author:
+- Maurice TEKO, Data Scientist^[Data Analytics, QueleAnalytics]
+date: "2020-02-10T00:00:57-07:00"
+tags: [R, RStudio]
+lang: English  
+output:
+html_document:
+    toc: yes
+---
+
+
+Third part of ***Predict Wine quality with data analytics***.  
+
+# Objective    
+I finished 2019 with a nice project for a client in the wine industry. I wanted materials linked to wine to popularize how ***Data*** and ***Analytics*** could help business gain more value. 
+<!-- To convince my client i wanted to show him a business case.  -->
+In the perspective of how we could use analytics for his business, I point up a case widely known in the data science community using analytics to predict wine quality. The case is about predicting the quality of the ***Vinho Verde*** wine based on various psychochemical tests only. 
+***Vinho Verde*** is exclusively produced in the demarcated region of Vinho Verde in northwestern Portugal, it is only produced from the indigenous grape varieties of the region, preserving its typicity of aromas and flavors.  From there we will plan ***Data strategy*** based on Company data for business perspectives: ***Real time (Sales Dashboarding, KPI, ROI)***, ***Next best buy***, ***upsell***, ***Customer experience***, ***campaign***,  ...    
+This report is a ***quick and dirty*** analysis to prepare a presentation.
+
+
+
+
+
+
+```{r library_and_dataload1,  results="hide", echo=F, error=FALSE, warning=FALSE, message=FALSE}
+
+library("rvest")
+library("dplyr")
+library("foreach")
+library("rlang")
+library("DT")
+library("caTools")
+library("corrplot")
+library(DataExplorer)
+
+data_wine_white = read.table("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv",
+                             header=T,sep=";",na.strings="NA") 
+
+
+library(DT)
+data_wine_white <- data_wine_white[!duplicated(data_wine_white), ]
+library(broom)
+skewness_asisit<-tidy(data_wine_white)
+skewness_wine_white<-skewness_asisit%>%
+  select(column, mean, skew) 
+# print(skewness_wine_white)
+
+library("caret")
+preprocess_wine_white <- preProcess(data_wine_white[,1:11], c("BoxCox", "center", "scale"))
+new_wine_white <- data.frame(trans = predict(preprocess_wine_white, data_wine_white))
+
+
+
+skewness<-tidy(new_wine_white)
+skewness_new_wine_white<-skewness%>%
+  select(column, skew) 
+# print(skewness_new_wine_white)
+
+
+new_wine_white <- new_wine_white[!abs(new_wine_white$trans.fixed.acidity) > 3,]
+new_wine_white <- new_wine_white[!abs(new_wine_white$trans.volatile.acidity) > 3,]
+new_wine_white <- new_wine_white[!abs(new_wine_white$trans.citric.acid) > 3,]
+new_wine_white <- new_wine_white[!abs(new_wine_white$trans.residual.sugar) > 3,]
+new_wine_white <- new_wine_white[!abs(new_wine_white$trans.chlorides) > 3,]
+new_wine_white <- new_wine_white[!abs(new_wine_white$trans.density) > 3,]
+new_wine_white <- new_wine_white[!abs(new_wine_white$trans.pH) > 3,]
+new_wine_white <- new_wine_white[!abs(new_wine_white$trans.sulphates) > 3,]
+new_wine_white <- new_wine_white[!abs(new_wine_white$trans.alcohol) > 3,]
+
+
+library("rmdformats") 
+library("corrgram")
+library("MASS")
+library("ggplot2")
+library("naniar")
+library("e1071")
+library("lattice")
+library("viridisLite")
+#library("viridis")
+library('versions')
+library("data.table")
+library("stringr")
+library("ggplot2")
+library("rmarkdown")
+library("pander")
+library("knitr")
+library("caret") 
+library("tidyr")
+library("gridExtra")
+library("grid")
+require("VIF")
+require("cvTools")
+require("marmap")
+library("htmltools")
+library("vembedr")
+
+
+
+data_wine_white$quality2 <- as.factor(data_wine_white$quality)
+
+# set.seed(3000)
+# spl = sample.split(data_wine_white$quality2, SplitRatio = 0.7)
+# 
+# data_wine_whitetrain = subset(data_wine_white, spl==TRUE)
+# data_wine_whitetest = subset(data_wine_white, spl==FALSE)
+# 
+
+
+data_wine_white$category[data_wine_white$quality <= 5] <- 0
+data_wine_white$category[data_wine_white$quality > 5] <- 1
+
+data_wine_white$category <- as.factor(data_wine_white$category)
+
+
+set.seed(3000)
+
+spl = sample.split(data_wine_white$category, SplitRatio = 0.7)
+
+data_wine_whitetrain = subset(data_wine_white, spl==TRUE)
+data_wine_whitetest = subset(data_wine_white, spl==FALSE)
+
+
+
+drop <- c("quality","quality2")
+data_wine_whitetrain2 = data_wine_whitetrain[,!(names(data_wine_whitetrain) %in% drop)]
+data_wine_whitetest2 = data_wine_whitetest[,!(names(data_wine_whitetest) %in% drop)]
+
+
+
+train  <- data_wine_whitetrain2
+valid  <- data_wine_whitetest2
+
+full_dataset<-rbind(train,valid)
+
+
+```
+
+
+
+
+
+
+
+
+
+## Combine Models Into Ensemble to predict the quality of wine.
+
+It can take time to find well performing machine learning algorithms for business problem.   
+Once you have a shortlist of accurate models, you can use algorithm tuning to get the most from each algorithm.
+Another approach that is widely use to increase accuracy on business problem is to combine the predictions of multiple different models together.  
+Let's take the same variables as our logistic model and try the exercice.
+
+```{r lodlib2_1,message=FALSE, warning=FALSE}
+
+
+library("gbm")
+library("mlbench")
+library("caret")
+library("caretEnsemble")
+library("mice")
+library("doParallel")
+library("car")
+
+
+drop <- c("quality","quality2")
+data_wine_whitetrain2 = data_wine_whitetrain[,!(names(data_wine_whitetrain) %in% drop)]
+data_wine_whitetest2 = data_wine_whitetest[,!(names(data_wine_whitetest) %in% drop)]
+```
+The three most popular methods for combining the predictions from different models are:  
+- Bagging : Building multiple models (typically of the same type) from different subsamples of the training dataset.  
+- Boosting : Building multiple models (typically of the same type) each of which learns to fix the prediction errors of a prior model in the chain.    
+- Stacking : Building multiple models (typically of differing types) and supervisor model that learns how to best combine the predictions of the primary models.    
+This post will not explain each of these methods (too long to explain and with formulas). 
+
+### Example of Boosting Algorithms  
+
+Below is an example of the C5.0 algorithm and Stochastic Gradient Boosting (using the Gradient Boosting Modeling implementation).  
+
+#### C5.0  
+
+While there are numerous implementations of decision trees, one of the most well-known is the C5.0 algorithm. The C5.0 algorithm has become the industry standard for producing decision trees, because it does well fo rmost types of problems directly out of the box. Compared to more advanced and sophisticated machine learning mnodels (e.g. Neural Networks and Support Vector Machines), the decision trees under the C5.0 algorithm generally perform nearly as well but are much easier to understan and deploy.    
+Let's run this algorithm.
+
+```{r fit.c50.1, results='hide',error=FALSE, warning=FALSE, message=FALSE}
+
+library(tidyverse)  # for tidy data analysis
+library(farff)      # for reading arff file
+
+library(caret)      # for modeling
+library(lime)       # for explaining predictions
+library(lattice)
+library(ggplot2)
+library("C50")
+
+# 
+# 
+# library("DALEX")
+# library("iBreakDown")
+# library("randomForest")
+set.seed(1313)
+
+# 
+# 
+# 
+# library("data.table")
+# library("haven")
+# source("age_calc.R")
+# library(tidyr)
+# library(dplyr)
+
+
+  control <- trainControl(method="repeatedcv", number=10, repeats=3)
+  seed <- 7
+  metric <- "Accuracy"
+ 
+   # C5.0
+  set.seed(seed)
+  fit.c50 <- train(category~., data=full_dataset, method="C5.0", metric=metric, trControl=control)
+  
+
+```
+
+
+
+
+#### Stochastic Gradient Boosting  
+
+Bagging consists of taking multiple subsets of the training data set, then building multiple independent decision tree models, and then average the models allowing to create a very performant predictive model.
+Similar to the bagging method, except that the trees are grown sequentially: each successive tree is grown using information from previously grown trees, with the aim to minimize the error of the previous models [^1](James et al. 2014) that is Boosting. There are different variants of ***boosting***, including ***Adaboost***, ***gradient boosting*** and ***stochastic gradient boosting***. Stochastic gradient boosting, is the most commonly used boosting technique, which involves resampling of observations and columns in each round. It offers the best performance. xgboost stands for extremely gradient boosting.  
+
+
+```{r fit.gbm1.1, results='hide',error=FALSE, warning=FALSE, message=FALSE}
+  set.seed(seed)
+  fit.gbm <- train(category~., data=full_dataset, method="gbm", metric=metric, trControl=control, verbose=FALSE)
+  
+
+```
+
+
+
+
+### Bagging Algorithms  
+
+Let's look at two of the most popular bagging machine learning algorithms: ***Bagged CART***
+and ***Random Forest***.  
+
+
+
+#### Bagged CART  
+
+```{r fit.treebag1, results='hide',error=FALSE, warning=FALSE, message=FALSE}
+
+ control <- trainControl(method="repeatedcv", number=10, repeats=3)
+  seed <- 7
+  metric <- "Accuracy"
+  
+  # Bagged CART
+  set.seed(seed)
+  fit.treebag <- train(category~., data=full_dataset, method="treebag", metric=metric, trControl=control)
+  
+
+```
+
+#### Random Forest
+
+```{r fit.rf1.1, results='hide',error=FALSE, warning=FALSE, message=FALSE}
+
+# Random Forest
+  set.seed(seed)
+  fit.rf <- train(category~., data=full_dataset, method="rf", metric=metric, trControl=control)
+ 
+  
+
+```
+
+
+#### summarize results
+Here a summary of the results in this plot below.  
+
+
+```{r bagging_results1.1, error=FALSE, warning=FALSE, message=FALSE}
+ # summarize results
+bagging_results <- resamples(list(treebag=fit.treebag, rf=fit.rf,c5.0=fit.c50, gbm=fit.gbm))
+summary(bagging_results)
+dotplot(bagging_results)
+
+
+```
+All those models accuracy is under 80% not so far from the previous logistic model accuracy.
+
+### Stacking Algorithms
+Stacking is a way to ensemble multiple classifications or regression model. 
+The idea is that you can attack a learning problem with different types of models which are capable to learn some part of the problem, but not the whole space of the problem. So, you can build multiple different learners and you use them to build an intermediate prediction, one prediction for each learned model. Then you add a new model which learns from the intermediate predictions the same target.
+This final model is said to be stacked on the top of the others, hence the name. Thus, you might improve your overall performance, and often you end up with a model which is better than any individual intermediate model. 
+
+
+
+
+
+Let's prepare again the data for ensembling somme models.
+
+```{r ensemble_data_for_models_1.1, error=FALSE, warning=FALSE, message=FALSE}
+
+library("caret")
+library("mlbench")
+library("pROC")
+set.seed(107)
+
+
+drop <- c("quality","quality2")
+data_wine_whitetrain2 = data_wine_whitetrain[,!(names(data_wine_whitetrain) %in% drop)]
+data_wine_whitetest2 = data_wine_whitetest[,!(names(data_wine_whitetest) %in% drop)]
+
+train  <- data_wine_whitetrain2
+valid  <- data_wine_whitetest2
+full_dataset<-rbind(train,valid)
+full_dataset  %>% 
+  mutate(category = factor(category, 
+                           labels = make.names(levels(category))))
+
+levels(full_dataset$category) <- c("Bad", "Good")
+
+```
+
+
+
+```{r preparedata_for_ensemble_models_2.1, error=FALSE, warning=FALSE, message=FALSE}
+
+
+
+inTrain <- createDataPartition(y = full_dataset$category, p = .75, list = FALSE)
+training <- full_dataset[ inTrain,]
+testing <- full_dataset[-inTrain,]
+my_control <- trainControl(
+  method="boot",
+  number=25,
+  savePredictions="final",
+  classProbs=TRUE,
+  index=createResample(training$category, 25),
+  summaryFunction=twoClassSummary
+)
+
+
+```
+
+
+
+```{r preparedata_for_ensemble_models_2_2.1, error=FALSE, warning=FALSE, message=FALSE}
+
+
+
+
+library("rpart")
+library("caretEnsemble")
+
+##     autoplot
+model_list <- caretList(
+  category~., data=training,
+  trControl=my_control,
+  methodList=c("rf",'lda', "glmboost","svmLinear", 'svmRadial')
+)
+# methodList=c("glm",'gbm',"rf",'lda', "glmboost","svmLinear", 'svmRadial')
+```
+
+
+
+```{r preparedata_for_ensemble_models_2_2_1.1, error=FALSE, warning=FALSE, message=FALSE}
+
+
+
+p <- as.data.frame(predict(model_list, newdata=head(testing)))
+print(p)
+```
+
+
+
+
+
+
+```{r preparedata_for_ensemble_models_3.1,  error=FALSE, warning=FALSE, message=FALSE}
+library("mlbench")
+library("randomForest")
+library("nnet")
+model_list_big <- caretList(
+  category~., 
+  data=training,
+  trControl=my_control,
+  metric="ROC",
+  methodList=c("rf",'lda', "glmboost","svmLinear", 'svmRadial')
+)
+```
+
+When we combine the predictions of different models using stacking, it is desirable that the predictions made by the sub-models have low correlation. This would suggest that the models are skillful but in different ways, allowing a new classifier to figure out how to get the best from each model for an improved score. If the predictions for the sub-models were highly corrected (>0.75) then they would be making the same or very similar predictions most of the time reducing the benefit of combining the predictions. We can see the correlation of gbm and all the rest of the models in the ensembling. 
+Let's not be rigoureous and keep it like that , just for insights.
+
+
+```{r ensemble_correlation.1,  error=FALSE, warning=FALSE, message=FALSE}
+
+# xyplot(resamples(model_list))
+modelCor(resamples(model_list))
+
+```
+
+<!-- We can see for the metric ROC for each models in the ensembling. -->
+
+```{r greedy_ensemble.1,  error=FALSE, warning=FALSE, message=FALSE}
+greedy_ensemble <- caretEnsemble(
+  model_list,
+  metric="ROC",
+  trControl=trainControl(
+    number=2,
+    summaryFunction=twoClassSummary,
+    classProbs=TRUE
+  ))
+summary(greedy_ensemble)
+```
+
+Let's combine the predictions of the Targetifiers using a simple linear model.
+
+
+
+
+
+
+```{r ensemble_models_forvarimp.1,error=FALSE, warning=FALSE,message=FALSE}
+library("caTools")
+model_preds <- lapply(model_list, predict, newdata=testing, type="prob")
+model_preds <- lapply(model_preds, function(x) x[,"Good"])
+model_preds <- data.frame(model_preds)
+ens_preds <- predict(greedy_ensemble, newdata=testing, type="prob")
+model_preds$ensemble <- ens_preds
+caTools::colAUC(model_preds, testing$category)
+
+library("gbm")
+varImp(greedy_ensemble)
+```
+
+
+
+
+
+
+```{r preparedata_for_ensemble_models_5.1,error=FALSE,warning=FALSE, message=FALSE}
+glm_ensemble <- caretStack(
+  model_list,
+  method="glm",
+  metric="ROC",
+  trControl=trainControl(
+    method="boot",
+    number=10,
+    savePredictions="final",
+    classProbs=TRUE,
+    summaryFunction=twoClassSummary
+  )
+)
+model_preds2 <- model_preds
+model_preds2$ensemble <- predict(glm_ensemble, newdata=testing, type="prob")
+CF <- coef(glm_ensemble$ens_model$finalModel)[-1]
+colAUC(model_preds2, testing$category)
+
+```
+
+
+
+
+```{r preparedata_for_ensemble_models_6.1,error=FALSE, warning=FALSE, message=FALSE}
+gbm_ensemble <- caretStack(
+  model_list,
+  method="gbm",
+  verbose=FALSE,
+  tuneLength=10,
+  metric="ROC",
+  trControl=trainControl(
+    method="boot",
+    number=10,
+    savePredictions="final",
+    classProbs=TRUE,
+    summaryFunction=twoClassSummary
+  )
+)
+model_preds3 <- model_preds
+model_preds3$ensemble <- predict(gbm_ensemble, newdata=testing, type="prob")
+colAUC(model_preds3, testing$category)
+
+```
+
+
+
+
+```{r preparedata_for_ensemble_models_7.1,error=FALSE, warning=FALSE, message=FALSE}
+rf_ensemble <- caretStack(
+  model_list,
+  method="rf",
+  verbose=FALSE,
+  tuneLength=10,
+  metric="ROC",
+  trControl=trainControl(
+    method="boot",
+    number=10,
+    savePredictions="final",
+    classProbs=TRUE,
+    summaryFunction=twoClassSummary
+  )
+)
+model_preds3 <- model_preds
+model_preds3$ensemble <- predict(rf_ensemble, newdata=testing, type="prob")
+colAUC(model_preds3, testing$category)
+
+```
+
+
+We can see that this ensemble model stacked with glm, gbm and random forest had lifted the accuracy to 83.32%,82.79%,0.80.90%.
+To go, we picked the stack using a GLM (with the accuracy of 83.32%).
+You may wonder why this exercise: stacking and combining 5 models and computational hours (if you have a big data base) is insanity right?   
+I could have added up to 100 or many more models if i was in competition with other data scientits.  
+These monster ensembles still have their uses by Wolpert in a 1992 paper.
+The basic idea behind stacked generalization is to use a pool of base classifiers, then using another classifier to combine their predictions, with the aim of reducing the generalization error. Many advantages of doing this.    
+- You can win Kaggle competitions.  
+- You can beat most state-of-the-art academic benchmarks with a single approach.  
+- Ensembling introduces a form of graceful degradation: loss of one model is not fatal for creating good predictions.
+Automated large ensembles ward against overfit and add a form of regularization, without requiring much tuning or selection. It is currently one of the best methods to improve machine learning algorithms.  
+***A 1% increase in accuracy may push an investment fund from making a loss, into making a little less loss.*** 
+
+# Conclusion, Limitations and Discussion.
+After trying many models without optimizing their hyper-parameters, this study reaches a conclusion that an ensemble models stack with GLM or a gradient boosting machine "Gbm" is the best for prediction and for classification. 
+For classifying high-quality wine, ensemble models model gives the best overall accuracy of 0.83.
+To further improve my model performance, I could further try the following steps.  
+1.	Learn some wine quality control knowledge to have a better sense of the prior knowledge in the wine producing business, so that I might be able to properly transform some features or interpret the interaction between features.    
+2.	Communicate with my clients to know more clearly about their goal: whether to predicting wine quality or to pick up wines with superior quality. Also, try to understand whether they have more tolerance for the type I error or the type II error, so that I can properly set the model cutoff value.    
+3.	Ask clients if they have more data available, especially for the underrepresented classes, such as wines with high or low quality. Using more data, I could build a more complicated model.  
+4.	Ask clients if they have other related features.     
+5.	Ask Clients what is important for them and many other things related to their business.   
+
+
+# Citations  
+[^1]: (James et al. 2014)
+[^2]: (James et al. 2014,P. Bruce and Bruce (2017))
+
