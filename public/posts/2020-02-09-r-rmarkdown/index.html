@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="author" content="QueleAnalytics">
+    <meta name="description" content="/">
+    <meta name="keywords" content="maurice, data scientist, analytics">
+
+    <meta property="og:site_name" content="LE BLOG DE QUELEANALYTICS">
+    <meta property="og:title" content="
+  Predict Wine quality with data analytics (Part 2) - LE BLOG DE QUELEANALYTICS
+">
+    <meta property="og:description" content="">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="/posts/2020-02-09-r-rmarkdown/">
+    <meta property="og:image" content="/">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="/posts/2020-02-09-r-rmarkdown/">
+    <meta name="twitter:image" content="/">
+
+    <base href="/posts/2020-02-09-r-rmarkdown/">
+    <title>
+  Predict Wine quality with data analytics (Part 2) - LE BLOG DE QUELEANALYTICS
+</title>
+
+    <link rel="canonical" href="/posts/2020-02-09-r-rmarkdown/">
+    
+    <link  rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Mono:400,700">
+    <link rel="stylesheet" href="/css/normalize.min.css">
+    <link rel="stylesheet" href="/css/style.min.css">
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+    
+      <link rel="alternate" href="/index.xml" type="application/rss+xml" title="LE BLOG DE QUELEANALYTICS">
+      <link href="/index.xml" rel="feed" type="application/rss+xml" title="LE BLOG DE QUELEANALYTICS" />
+    
+
+    <meta name="generator" content="Hugo 0.59.1" />
+  </head>
+
+  <body class="">
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="/">LE BLOG DE QUELEANALYTICS</a>
+    <input type="checkbox" id="menu-control"/>
+    <label class="menu-mobile  float-right " for="menu-control">
+      <span class="btn-mobile  float-right ">&#9776;</span>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item  align-center ">
+              <a class="navigation-link" href="/QueleA">QueleA</a>
+            </li>
+          
+            <li class="navigation-item  align-center ">
+              <a class="navigation-link" href="/services/">Services</a>
+            </li>
+          
+            <li class="navigation-item  align-center ">
+              <a class="navigation-link" href="/posts">posts</a>
+            </li>
+          
+            <li class="navigation-item  align-center ">
+              <a class="navigation-link" href="/contact/">Contact</a>
+            </li>
+          
+            <li class="navigation-item  align-center ">
+              <a class="navigation-link" href="/docs/cv.pdf">CV</a>
+            </li>
+          
+            <li class="navigation-item  align-center ">
+              <a class="navigation-link" href="https://be.linkedin.com/in/mauriceteko/">Linkedin</a>
+            </li>
+          
+            <li class="navigation-item  align-center ">
+              <a class="navigation-link" href="https://twitter.com/MauriceDataLab/">Twitter</a>
+            </li>
+          
+        
+        
+          
+          
+          
+            <li class= " mobile-menu-lang-separator-centered ">
+              <hr />
+            </li>
+          
+          
+            
+          
+            
+              
+                
+                  <li class="multilingual-separator">
+                    <p>|</p>
+                  </li>
+                
+                
+              
+              <li class="navigation-item  align-center ">
+                <a href="/en/">English</a>
+              </li>
+            
+          
+        
+      </ul>
+    </label>
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+  <article>
+    <header>
+      <h1 class="title">Predict Wine quality with data analytics (Part 2)</h1>
+      <h2 class="date">February 9, 2020</h2>
+
+      
+    </header>
+
+    
+
+
+<p>Part II of <strong><em>Predict Wine quality with data analytics</em></strong> .</p>
+<div id="objective" class="section level1">
+<h1>Objective</h1>
+<p>I finished 2019 with a nice project for a client in the wine industry. I wanted materials linked to wine to popularize how <strong><em>Data</em></strong> and <strong><em>Analytics</em></strong> could help business gain more value.
+<!-- To convince my client i wanted to show him a business case.  -->
+In the perspective of how we could use analytics for his business, I point up a case widely known in the data science community using analytics to predict wine quality. The case is about predicting the quality of the <strong><em>Vinho Verde</em></strong> wine based on various psychochemical tests only.
+<strong><em>Vinho Verde</em></strong> is exclusively produced in the demarcated region of Vinho Verde in northwestern Portugal, it is only produced from the indigenous grape varieties of the region, preserving its typicity of aromas and flavors. From there we will plan <strong><em>Data strategy</em></strong> based on Company data for business perspectives: <strong><em>Real time (Sales Dashboarding, KPI, ROI)</em></strong>, <strong><em>Next best buy</em></strong>, <strong><em>upsell</em></strong>, <strong><em>Customer experience</em></strong>, <strong><em>campaign</em></strong>, …<br />
+This report is a <strong><em>quick and dirty</em></strong> analysis to prepare a presentation.</p>
+<!-- {r library_and_dataload,  echo=F, error=FALSE, warning=FALSE, message=FALSE} -->
+</div>
+<div id="models" class="section level1">
+<h1>Models</h1>
+<p>In this work, machine learning techniques are used to determine dependency of wine quality on other variables and in wine quality predictions. This section suumarise all insights of proposed methodology.<br />
+1 - Linear Model<br />
+2 - Ordinal logistic Regression<br />
+3 - Logistic Regression<br />
+4 - Random forest,Boosting Algorithms and Bagging Algorithms.<br />
+5 - Ensemble models</p>
+<div id="linear-model" class="section level2">
+<h2>Linear Model</h2>
+<p>Linear regression is an analysis that assesses whether one or more predictor variables explain the dependent (criterion) variable.
+This is not always the best model, but it’s okay to start with, so that we have a basic sense of the relationship between the independent variable and dependent variable. The R2 values of our models are not good.
+The regression has five key assumptions:
+<strong><em>Assumption for linear model</em></strong><br />
+Linear relationship, No or little multicollinearity, Multivariate normality, No auto-correlation, Homoscedasticity.<br />
+Let’s before create our model split the data on Train-Test Set.<br />
+Train-Test split is a practice that is followed in the model building and evaluation workflow. Testing your dataset on a testing data that is totally excluded from the training data helps us find whether the model is overfitting or underfitting atleast.
+Separating the data enables to evaluate the model generalization capabilities and have an idea of how it would perform on unseen data.</p>
+<pre class="r"><code>library(&quot;rmdformats&quot;) 
+library(&quot;corrgram&quot;)
+library(&quot;MASS&quot;)
+library(&quot;ggplot2&quot;)
+library(&quot;naniar&quot;)
+library(&quot;e1071&quot;)
+library(&quot;lattice&quot;)</code></pre>
+<div id="step-1-are-all-the-hypotheses-met-for-a-linear-model" class="section level3">
+<h3>Step 1 : Are all the hypotheses met for a linear model?</h3>
+<pre class="r"><code>set.seed(100)  
+trainingRowIndex &lt;- sample(1:nrow(new_wine_white), 0.8*nrow(new_wine_white))  
+wine_whitetrain &lt;- new_wine_white[trainingRowIndex, ]  
+wine_whitetest  &lt;- new_wine_white[-trainingRowIndex, ]</code></pre>
+<p>Let’s see if all the hypotheses are met for a linear model.<br />
+Do all the variables entered in the model?</p>
+<pre class="r"><code>linear_for_multicoli_1 &lt;- lm(trans.quality ~ . , wine_whitetrain) # taking all the points.
+summary(linear_for_multicoli_1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = trans.quality ~ ., data = wine_whitetrain)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.8534 -0.4741 -0.0268  0.4817  3.0811 
+## 
+## Coefficients:
+##                            Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                 5.85934    0.01376 425.935  &lt; 2e-16 ***
+## trans.fixed.acidity         0.06469    0.02129   3.039  0.00240 ** 
+## trans.volatile.acidity     -0.16719    0.01526 -10.959  &lt; 2e-16 ***
+## trans.citric.acid           0.05436    0.01736   3.132  0.00176 ** 
+## trans.residual.sugar        0.33715    0.03358  10.040  &lt; 2e-16 ***
+## trans.chlorides            -0.05839    0.01907  -3.062  0.00222 ** 
+## trans.free.sulfur.dioxide   0.13644    0.01901   7.179 8.84e-13 ***
+## trans.total.sulfur.dioxide -0.04399    0.02148  -2.048  0.04066 *  
+## trans.density              -0.43953    0.05738  -7.660 2.49e-14 ***
+## trans.pH                    0.12730    0.01875   6.788 1.37e-11 ***
+## trans.sulphates             0.07755    0.01477   5.252 1.61e-07 ***
+## trans.alcohol               0.18185    0.03587   5.069 4.24e-07 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.75 on 2988 degrees of freedom
+## Multiple R-squared:  0.3037, Adjusted R-squared:  0.3012 
+## F-statistic: 118.5 on 11 and 2988 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>multicollinearity?<br />
+In multiple regression, two or more predictor variables might be correlated with each other. This situation is referred as collinearity. This means that there is redundancy between predictor variables. In the presence of multicollinearity, the solution of the regression model becomes unstable. For a given predictor (p), multicollinearity can assessed by computing a score called the variance inflation factor (or VIF), which measures how much the variance of a regression coefficient is inflated due to multicollinearity in the model.</p>
+<p>The smallest possible value of VIF is one (absence of multicollinearity). As a rule of thumb, a VIF value that exceeds 5 or 10 indicates a problematic amount of collinearity <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. When faced to multicollinearity, the concerned variables should be removed, since the presence of multicollinearity implies that the information that this variable provides about the response is redundant in the presence of the other variables <a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.
+In the presence of multicollinearity, the solution of the regression model becomes unstable.</p>
+<p>Let’s plot acorrelation plot as previously and compute the VIF.</p>
+<pre class="r"><code>library(&quot;corrgram&quot;)
+plot_correlation(wine_whitetrain, cor_args = list( &#39;use&#39; = &#39;complete.obs&#39;))</code></pre>
+<p><img src="/posts/2020-02-09-r-rmarkdown_files/figure-html/corrgram2-1.png" width="672" /></p>
+<pre class="r"><code>car::vif(linear_for_multicoli_1)</code></pre>
+<pre><code>##        trans.fixed.acidity     trans.volatile.acidity 
+##                   2.263793                   1.165369 
+##          trans.citric.acid       trans.residual.sugar 
+##                   1.173586                   5.978815 
+##            trans.chlorides  trans.free.sulfur.dioxide 
+##                   1.434429                   1.922794 
+## trans.total.sulfur.dioxide              trans.density 
+##                   2.427215                  16.330205 
+##                   trans.pH            trans.sulphates 
+##                   1.732787                   1.110997 
+##              trans.alcohol 
+##                   6.804558</code></pre>
+<p>We can see multicollinarity over here. the VIF score for the predictor variable trans.density is very high (VIF = 16.33). This might be problematic.We remove trans.density because it exibits multicollinarity.
+Now let’s restart fitting the new model by withdrawing trans.density and recompute VIF.</p>
+<pre class="r"><code>linear_for_multicoli_2 &lt;- lm(trans.quality ~ . -trans.density , wine_whitetrain)
+ summary(linear_for_multicoli_2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = trans.quality ~ . - trans.density, data = wine_whitetrain)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.7902 -0.4782 -0.0268  0.4760  3.0761 
+## 
+## Coefficients:
+##                            Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                 5.86326    0.01388 422.458  &lt; 2e-16 ***
+## trans.fixed.acidity        -0.03843    0.01665  -2.308 0.021067 *  
+## trans.volatile.acidity     -0.16051    0.01538 -10.438  &lt; 2e-16 ***
+## trans.citric.acid           0.04665    0.01749   2.667 0.007704 ** 
+## trans.residual.sugar        0.11115    0.01620   6.863 8.16e-12 ***
+## trans.chlorides            -0.07692    0.01910  -4.027 5.78e-05 ***
+## trans.free.sulfur.dioxide   0.14609    0.01915   7.630 3.13e-14 ***
+## trans.total.sulfur.dioxide -0.06090    0.02157  -2.823 0.004787 ** 
+## trans.pH                    0.05653    0.01648   3.431 0.000610 ***
+## trans.sulphates             0.05557    0.01462   3.800 0.000147 ***
+## trans.alcohol               0.42001    0.01807  23.240  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.7572 on 2989 degrees of freedom
+## Multiple R-squared:  0.2901, Adjusted R-squared:  0.2877 
+## F-statistic: 122.1 on 10 and 2989 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>linear_for_multicoli_2 &lt;- lm(trans.quality ~ . -trans.density , wine_whitetrain)
+summary(linear_for_multicoli_2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = trans.quality ~ . - trans.density, data = wine_whitetrain)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.7902 -0.4782 -0.0268  0.4760  3.0761 
+## 
+## Coefficients:
+##                            Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                 5.86326    0.01388 422.458  &lt; 2e-16 ***
+## trans.fixed.acidity        -0.03843    0.01665  -2.308 0.021067 *  
+## trans.volatile.acidity     -0.16051    0.01538 -10.438  &lt; 2e-16 ***
+## trans.citric.acid           0.04665    0.01749   2.667 0.007704 ** 
+## trans.residual.sugar        0.11115    0.01620   6.863 8.16e-12 ***
+## trans.chlorides            -0.07692    0.01910  -4.027 5.78e-05 ***
+## trans.free.sulfur.dioxide   0.14609    0.01915   7.630 3.13e-14 ***
+## trans.total.sulfur.dioxide -0.06090    0.02157  -2.823 0.004787 ** 
+## trans.pH                    0.05653    0.01648   3.431 0.000610 ***
+## trans.sulphates             0.05557    0.01462   3.800 0.000147 ***
+## trans.alcohol               0.42001    0.01807  23.240  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.7572 on 2989 degrees of freedom
+## Multiple R-squared:  0.2901, Adjusted R-squared:  0.2877 
+## F-statistic: 122.1 on 10 and 2989 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>#Make predictions
+predictions &lt;- linear_for_multicoli_2 %&gt;% predict(wine_whitetest)
+
+#Model performance&quot; 
+model_performence_vif1&lt;-data.frame(
+  RMSE = RMSE(predictions, wine_whitetest$trans.quality),
+  R2 = R2(predictions, wine_whitetest$trans.quality)
+)
+table(model_performence_vif1)</code></pre>
+<pre><code>##                    R2
+## RMSE                0.289487656369341
+##   0.707058318559868                 1</code></pre>
+<p>the variable trans.fixed.acidity is not significant ON the same level of the other variables, let’s withdraw it and We fit another model.</p>
+<pre class="r"><code>linear_for_multicoli_3 &lt;- lm(trans.quality ~ . -trans.density - trans.fixed.acidity, wine_whitetrain)
+summary(linear_for_multicoli_3)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = trans.quality ~ . - trans.density - trans.fixed.acidity, 
+##     data = wine_whitetrain)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.8071 -0.4730 -0.0288  0.4864  2.9932 
+## 
+## Coefficients:
+##                            Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                 5.86262    0.01389 422.191  &lt; 2e-16 ***
+## trans.volatile.acidity     -0.15813    0.01535 -10.299  &lt; 2e-16 ***
+## trans.citric.acid           0.03683    0.01698   2.169 0.030187 *  
+## trans.residual.sugar        0.11157    0.01621   6.884 7.06e-12 ***
+## trans.chlorides            -0.07843    0.01910  -4.106 4.13e-05 ***
+## trans.free.sulfur.dioxide   0.15380    0.01887   8.152 5.19e-16 ***
+## trans.total.sulfur.dioxide -0.06803    0.02136  -3.184 0.001466 ** 
+## trans.pH                    0.07169    0.01512   4.741 2.23e-06 ***
+## trans.sulphates             0.05528    0.01463   3.778 0.000161 ***
+## trans.alcohol               0.41982    0.01809  23.213  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.7577 on 2990 degrees of freedom
+## Multiple R-squared:  0.2888, Adjusted R-squared:  0.2867 
+## F-statistic: 134.9 on 9 and 2990 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>same comment for trans.citric.acid. We refit another model removing trans.citric.acid.</p>
+<pre class="r"><code>linear_for_multicoli_4 &lt;- lm(trans.quality ~ . -trans.density - trans.fixed.acidity - trans.citric.acid, wine_whitetrain)
+summary(linear_for_multicoli_4)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = trans.quality ~ . - trans.density - trans.fixed.acidity - 
+##     trans.citric.acid, data = wine_whitetrain)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.8418 -0.4752 -0.0350  0.4873  3.0320 
+## 
+## Coefficients:
+##                            Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                 5.86025    0.01385 423.066  &lt; 2e-16 ***
+## trans.volatile.acidity     -0.16495    0.01504 -10.969  &lt; 2e-16 ***
+## trans.residual.sugar        0.11271    0.01621   6.954 4.34e-12 ***
+## trans.chlorides            -0.07753    0.01911  -4.057 5.10e-05 ***
+## trans.free.sulfur.dioxide   0.15277    0.01887   8.095 8.22e-16 ***
+## trans.total.sulfur.dioxide -0.06309    0.02126  -2.968  0.00302 ** 
+## trans.pH                    0.06515    0.01483   4.394 1.15e-05 ***
+## trans.sulphates             0.05743    0.01461   3.931 8.65e-05 ***
+## trans.alcohol               0.42159    0.01808  23.321  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.7582 on 2991 degrees of freedom
+## Multiple R-squared:  0.2877, Adjusted R-squared:  0.2858 
+## F-statistic:   151 on 8 and 2991 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>car::vif(linear_for_multicoli_4)</code></pre>
+<pre><code>##     trans.volatile.acidity       trans.residual.sugar 
+##                   1.107818                   1.362757 
+##            trans.chlorides  trans.free.sulfur.dioxide 
+##                   1.409025                   1.854808 
+## trans.total.sulfur.dioxide                   trans.pH 
+##                   2.325575                   1.059890 
+##            trans.sulphates              trans.alcohol 
+##                   1.064101                   1.690718</code></pre>
+<p>At this step results seems good to go.<br />
+What about the Homoscedasticity?<br />
+Analysis of variance (ANOVA) generalizes the t-test to more than two groups. It is useful for comparing (testing) three or more group means for statistical significance.</p>
+<pre class="r"><code>anova(linear_for_multicoli_4)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: trans.quality
+##                              Df  Sum Sq Mean Sq  F value    Pr(&gt;F)    
+## trans.volatile.acidity        1   81.85  81.851 142.3808 &lt; 2.2e-16 ***
+## trans.residual.sugar          1    5.50   5.495   9.5592  0.002008 ** 
+## trans.chlorides               1  194.22 194.219 337.8440 &lt; 2.2e-16 ***
+## trans.free.sulfur.dioxide     1   22.41  22.413  38.9880 4.868e-10 ***
+## trans.total.sulfur.dioxide    1   40.15  40.147  69.8364 &lt; 2.2e-16 ***
+## trans.pH                      1   25.99  25.993  45.2157 2.106e-11 ***
+## trans.sulphates               1   11.70  11.697  20.3478 6.705e-06 ***
+## trans.alcohol                 1  312.65 312.646 543.8491 &lt; 2.2e-16 ***
+## Residuals                  2991 1719.46   0.575                       
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>par(mfrow=c(2,2), oma = c(1,1,0,0) + 0.1, mar = c(3,3,1,1) + 0.1)
+plot(linear_for_multicoli_4)</code></pre>
+<p><img src="/posts/2020-02-09-r-rmarkdown_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>The F- Statistic - p value &lt;= 2.2e -16.<br />
+We can see that p value is less than 0.05. Thus we can reject the null hypothesis and accept the alternate hypothesis. Thus,we can say that the model is significant.</p>
+</div>
+<div id="the-retain-model" class="section level3">
+<h3>The Retain model</h3>
+<pre class="r"><code>steplinear &lt;- step(linear_for_multicoli_4)</code></pre>
+<pre><code>## Start:  AIC=-1651.81
+## trans.quality ~ (trans.fixed.acidity + trans.volatile.acidity + 
+##     trans.citric.acid + trans.residual.sugar + trans.chlorides + 
+##     trans.free.sulfur.dioxide + trans.total.sulfur.dioxide + 
+##     trans.density + trans.pH + trans.sulphates + trans.alcohol) - 
+##     trans.density - trans.fixed.acidity - trans.citric.acid
+## 
+##                              Df Sum of Sq    RSS     AIC
+## &lt;none&gt;                                    1719.5 -1651.8
+## - trans.total.sulfur.dioxide  1     5.065 1724.5 -1645.0
+## - trans.sulphates             1     8.883 1728.3 -1638.3
+## - trans.chlorides             1     9.463 1728.9 -1637.3
+## - trans.pH                    1    11.098 1730.5 -1634.5
+## - trans.residual.sugar        1    27.800 1747.3 -1605.7
+## - trans.free.sulfur.dioxide   1    37.675 1757.1 -1588.8
+## - trans.volatile.acidity      1    69.171 1788.6 -1535.5
+## - trans.alcohol               1   312.646 2032.1 -1152.6</code></pre>
+<pre class="r"><code>summary(steplinear)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = trans.quality ~ (trans.fixed.acidity + trans.volatile.acidity + 
+##     trans.citric.acid + trans.residual.sugar + trans.chlorides + 
+##     trans.free.sulfur.dioxide + trans.total.sulfur.dioxide + 
+##     trans.density + trans.pH + trans.sulphates + trans.alcohol) - 
+##     trans.density - trans.fixed.acidity - trans.citric.acid, 
+##     data = wine_whitetrain)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -3.8418 -0.4752 -0.0350  0.4873  3.0320 
+## 
+## Coefficients:
+##                            Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                 5.86025    0.01385 423.066  &lt; 2e-16 ***
+## trans.volatile.acidity     -0.16495    0.01504 -10.969  &lt; 2e-16 ***
+## trans.residual.sugar        0.11271    0.01621   6.954 4.34e-12 ***
+## trans.chlorides            -0.07753    0.01911  -4.057 5.10e-05 ***
+## trans.free.sulfur.dioxide   0.15277    0.01887   8.095 8.22e-16 ***
+## trans.total.sulfur.dioxide -0.06309    0.02126  -2.968  0.00302 ** 
+## trans.pH                    0.06515    0.01483   4.394 1.15e-05 ***
+## trans.sulphates             0.05743    0.01461   3.931 8.65e-05 ***
+## trans.alcohol               0.42159    0.01808  23.321  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.7582 on 2991 degrees of freedom
+## Multiple R-squared:  0.2877, Adjusted R-squared:  0.2858 
+## F-statistic:   151 on 8 and 2991 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>par(mfrow=c(2,2), oma = c(1,1,0,0) + 0.1, mar = c(3,3,1,1) + 0.1)
+plot(steplinear)</code></pre>
+<p><img src="/posts/2020-02-09-r-rmarkdown_files/figure-html/stepwise2-1.png" width="672" /></p>
+<p>Residuals vs Fitted plot shows if residuals have non-linear patterns.Residuals around a horizontal line without distinct patterns, that is a good indication we don’t have non-linear relationships. Normal QQ plot shows residuals fitting the line. Hence, can call it norlly distibuted residuals.</p>
+<p>Scale-Location plot shows if residuals are spread equally along the ranges of predictors. This is how you can check the assumption of equal variance (homoscedasticity). It’s good if you see a horizontal line with equally (randomly) spread points.</p>
+<p>Residuals vs Leverage plot has a typical look when there is some influential case. You can barely see Cook’s distance lines (a red dashed line) because all cases are well inside of the Cook’s distance.</p>
+</div>
+<div id="predicting-on-trained-set" class="section level3">
+<h3>Predicting on Trained Set</h3>
+<p>Predict is a generic function for predictions from the results of various model fitting functions. The function invokes particular methods which depend on the class of the first argument.</p>
+<pre class="r"><code>distPred &lt;- predict(steplinear, wine_whitetrain)  
+head(distPred)</code></pre>
+<pre><code>##      618     4508     4837     2607     3970     4002 
+## 5.995269 6.330251 5.065816 6.081245 6.016956 5.010860</code></pre>
+<p>Converting the Number to a Whole Number.
+We use the ceiling operation for rounding the numeric values towards near integer values.</p>
+<pre class="r"><code>distPred1 &lt;- ceiling(distPred)
+head(distPred1)</code></pre>
+<pre><code>##  618 4508 4837 2607 3970 4002 
+##    6    7    6    7    7    6</code></pre>
+</div>
+<div id="confusion-matrix-on-training-data" class="section level3">
+<h3>Confusion Matrix on Training Data</h3>
+<p>Frequency tables with condition and cross tabulations.</p>
+<pre class="r"><code>trn_tab &lt;- table(predicted = distPred1, actual = wine_whitetrain$trans.quality)
+trn_tab</code></pre>
+<pre><code>##          actual
+## predicted   3   4   5   6   7   8   9
+##         5   2  24  75  22   2   0   0
+##         6   4  83 714 697 117  15   1
+##         7   7   8 121 595 422  85   3
+##         8   0   0   0   0   1   2   0</code></pre>
+<p>We check the overall accuracy of the linear model.</p>
+<pre class="r"><code>sum(diag(trn_tab))/length(wine_whitetest$trans.quality)</code></pre>
+<pre><code>## [1] 0.2746667</code></pre>
+<p>Accuracy Prediction over train set Linear Model is 27% : BAD NEW!!!</p>
+</div>
+<div id="confusion-matrix-on-validating-data" class="section level3">
+<h3>Confusion Matrix on Validating Data</h3>
+<p>Testing or Validating the Model.</p>
+<pre class="r"><code>distPred &lt;- predict(steplinear, wine_whitetest)  
+head(distPred)</code></pre>
+<pre><code>##       13       16       17       19       29       32 
+## 6.015378 6.388735 5.029927 5.702867 5.880534 5.809879</code></pre>
+<p>Round the numeric values to the nearest integer values.</p>
+<pre class="r"><code>distPred1 &lt;- ceiling(distPred)
+head(distPred1)</code></pre>
+<pre><code>## 13 16 17 19 29 32 
+##  7  7  6  6  6  6</code></pre>
+<pre class="r"><code>tst_tab &lt;- table(predicted = distPred1, actual = wine_whitetest$trans.quality)
+tst_tab</code></pre>
+<pre><code>##          actual
+## predicted   3   4   5   6   7   8
+##         5   0   5  11   4   1   0
+##         6   2  16 156 186  12   3
+##         7   1   5  26 189 112  19
+##         8   0   0   0   2   0   0</code></pre>
+<p>Checking the accuracy of the test data.</p>
+<pre class="r"><code>sum(diag(tst_tab))/length(wine_whitetest$trans.quality)</code></pre>
+<pre><code>## [1] 0.05866667</code></pre>
+<p>Accuracy Prediction over test set Linear Model is 5.8% : Very very bad news!!!!
+So we won’t go for this model. Many things to say to accurate the model but it’s not the purpose here.
+And if we try a quick Ordinal Logistic Regression Model?</p>
+</div>
+</div>
+<div id="ordinal-logistic-regression-model" class="section level2">
+<h2>Ordinal Logistic Regression Model</h2>
+<p>No major Assumptions are need for Ordinal logistic regression. The ordinal logistic regression requires the dependent variable to be ordinal.</p>
+<pre class="r"><code>data_wine_white$quality2 &lt;- as.factor(data_wine_white$quality)</code></pre>
+<div id="train---test-set" class="section level3">
+<h3>Train - Test Set</h3>
+<pre class="r"><code>set.seed(3000)
+spl = sample.split(data_wine_white$quality2, SplitRatio = 0.7)
+
+data_wine_whitetrain = subset(data_wine_white, spl==TRUE)
+data_wine_whitetest = subset(data_wine_white, spl==FALSE)
+
+head(data_wine_whitetrain)</code></pre>
+<pre><code>##    fixed.acidity volatile.acidity citric.acid residual.sugar chlorides
+## 2            6.3             0.30        0.34           1.60     0.049
+## 7            6.2             0.32        0.16           7.00     0.045
+## 10           8.1             0.22        0.43           1.50     0.044
+## 11           8.1             0.27        0.41           1.45     0.033
+## 12           8.6             0.23        0.40           4.20     0.035
+## 13           7.9             0.18        0.37           1.20     0.040
+##    free.sulfur.dioxide total.sulfur.dioxide density   pH sulphates alcohol
+## 2                   14                  132  0.9940 3.30      0.49     9.5
+## 7                   30                  136  0.9949 3.18      0.47     9.6
+## 10                  28                  129  0.9938 3.22      0.45    11.0
+## 11                  11                   63  0.9908 2.99      0.56    12.0
+## 12                  17                  109  0.9947 3.14      0.53     9.7
+## 13                  16                   75  0.9920 3.18      0.63    10.8
+##    quality quality2
+## 2        6        6
+## 7        6        6
+## 10       6        6
+## 11       5        5
+## 12       5        5
+## 13       5        5</code></pre>
+<p>Fitting ordinal logistic regression Model</p>
+<pre class="r"><code>require(MASS)
+require(reshape2)</code></pre>
+<pre><code>## Loading required package: reshape2</code></pre>
+<pre><code>## 
+## Attaching package: &#39;reshape2&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:tidyr&#39;:
+## 
+##     smiths</code></pre>
+<pre><code>## The following objects are masked from &#39;package:data.table&#39;:
+## 
+##     dcast, melt</code></pre>
+<pre class="r"><code>o_lrm &lt;- polr(quality2 ~ . - quality, data = data_wine_whitetrain, Hess=TRUE)</code></pre>
+<pre class="r"><code>o_lrm &lt;- polr(quality2 ~ . - quality, data = data_wine_whitetrain, Hess=TRUE)</code></pre>
+<p>should not use vif to check for multicollinarilty in case of categorical veriable.</p>
+<pre class="r"><code>car::vif(o_lrm)</code></pre>
+<pre><code>## Warning in vif.default(o_lrm): No intercept: vifs may not be sensible.</code></pre>
+<pre><code>##        fixed.acidity     volatile.acidity          citric.acid 
+##         9.437704e+08         3.828385e+08         6.424758e+05 
+##       residual.sugar            chlorides  free.sulfur.dioxide 
+##         1.845434e+12         1.457669e+00         6.425308e+00 
+## total.sulfur.dioxide              density                   pH 
+##         2.228460e+16         4.943074e+10         1.096931e+10 
+##            sulphates              alcohol 
+##         1.373230e+08         2.243821e+16</code></pre>
+<pre class="r"><code>summary(o_lrm)</code></pre>
+<pre><code>## Call:
+## polr(formula = quality2 ~ . - quality, data = data_wine_whitetrain, 
+##     Hess = TRUE)
+## 
+## Coefficients:
+##                           Value Std. Error  t value
+## fixed.acidity           0.19109   0.049513    3.859
+## volatile.acidity       -4.16006   0.396986  -10.479
+## citric.acid             0.47473   0.315331    1.506
+## residual.sugar          0.18950   0.009254   20.477
+## chlorides              -1.02123   1.618406   -0.631
+## free.sulfur.dioxide     0.01804   0.002996    6.022
+## total.sulfur.dioxide   -0.00179   0.001256   -1.425
+## density              -405.55303   0.611027 -663.724
+## pH                      2.37597   0.279420    8.503
+## sulphates               1.83492   0.325575    5.636
+## alcohol                 0.51080   0.042104   12.132
+## 
+## Intercepts:
+##     Value     Std. Error t value  
+## 3|4 -393.5020    0.6212  -633.4946
+## 4|5 -391.1957    0.6196  -631.3735
+## 5|6 -388.2891    0.6262  -620.0709
+## 6|7 -385.6073    0.6410  -601.5335
+## 7|8 -383.3112    0.6550  -585.2349
+## 8|9 -380.0386    0.8192  -463.9258
+## 
+## Residual Deviance: 6145.137 
+## AIC: 6179.137</code></pre>
+<p>Smaller the AIC better is the model. So let’s try step wise logistic regression.</p>
+<pre class="r"><code>o_lr = step(o_lrm)</code></pre>
+<pre><code>## Start:  AIC=6179.14
+## quality2 ~ (fixed.acidity + volatile.acidity + citric.acid + 
+##     residual.sugar + chlorides + free.sulfur.dioxide + total.sulfur.dioxide + 
+##     density + pH + sulphates + alcohol + quality) - quality
+## 
+##                        Df    AIC
+## - chlorides             1 6177.5
+## - total.sulfur.dioxide  1 6179.0
+## &lt;none&gt;                    6179.1
+## - citric.acid           1 6179.4
+## - fixed.acidity         1 6183.7
+## - alcohol               1 6203.4
+## - sulphates             1 6206.0
+## - density               1 6207.4
+## - free.sulfur.dioxide   1 6213.1
+## - pH                    1 6217.6
+## - residual.sugar        1 6222.9
+## - volatile.acidity      1 6287.0
+## 
+## Step:  AIC=6177.52
+## quality2 ~ fixed.acidity + volatile.acidity + citric.acid + residual.sugar + 
+##     free.sulfur.dioxide + total.sulfur.dioxide + density + pH + 
+##     sulphates + alcohol
+## 
+##                        Df    AIC
+## - total.sulfur.dioxide  1 6177.4
+## &lt;none&gt;                    6177.5
+## - citric.acid           1 6177.6
+## - fixed.acidity         1 6183.0
+## - alcohol               1 6201.6
+## - sulphates             1 6204.9
+## - density               1 6208.0
+## - free.sulfur.dioxide   1 6211.1
+## - pH                    1 6218.7
+## - residual.sugar        1 6225.4
+## - volatile.acidity      1 6288.9
+## 
+## Step:  AIC=6177.36
+## quality2 ~ fixed.acidity + volatile.acidity + citric.acid + residual.sugar + 
+##     free.sulfur.dioxide + density + pH + sulphates + alcohol
+## 
+##                       Df    AIC
+## - citric.acid          1 6177.3
+## &lt;none&gt;                   6177.4
+## - fixed.acidity        1 6184.0
+## - alcohol              1 6200.2
+## - sulphates            1 6204.0
+## - density              1 6213.2
+## - free.sulfur.dioxide  1 6216.0
+## - pH                   1 6219.7
+## - residual.sugar       1 6229.7
+## - volatile.acidity     1 6307.1
+## 
+## Step:  AIC=6177.31
+## quality2 ~ fixed.acidity + volatile.acidity + residual.sugar + 
+##     free.sulfur.dioxide + density + pH + sulphates + alcohol
+## 
+##                       Df    AIC
+## &lt;none&gt;                   6177.3
+## - fixed.acidity        1 6184.9
+## - alcohol              1 6201.8
+## - density              1 6211.8
+## - sulphates            1 6212.1
+## - pH                   1 6218.1
+## - free.sulfur.dioxide  1 6225.9
+## - residual.sugar       1 6228.4
+## - volatile.acidity     1 6316.1</code></pre>
+<p>We see some of the variables got eliminated.</p>
+<p>fixed.acidity, alcohol, density, sulphates, pH, free.sulfur.dioxide, residual.sugar, volatile.acidity are the variables being considered.</p>
+<pre class="r"><code>head(fitted(o_lr))</code></pre>
+<pre><code>##              3           4         5         6          7           8
+## 2  0.012733201 0.102476569 0.5891421 0.2675954 0.02514971 0.002792462
+## 7  0.007370319 0.062364804 0.5085991 0.3739248 0.04270917 0.004839804
+## 10 0.002796939 0.024740172 0.3137434 0.5415504 0.10395809 0.012702967
+## 11 0.001083919 0.009752403 0.1561342 0.5775992 0.22198247 0.032135733
+## 12 0.005402251 0.046583924 0.4488420 0.4350332 0.05727276 0.006603401
+## 13 0.001270388 0.011408834 0.1775801 0.5833461 0.19772064 0.027554412
+##               9
+## 2  0.0001105250
+## 7  0.0001919682
+## 10 0.0005080325
+## 11 0.0013121200
+## 12 0.0002624039
+## 13 0.0011195326</code></pre>
+</div>
+<div id="accuracy-on-training-set" class="section level3">
+<h3>Accuracy on Training Set</h3>
+<pre class="r"><code>p &lt;- predict(o_lr, type = &quot;class&quot;) 
+head(p)</code></pre>
+<pre><code>## [1] 5 5 6 6 5 6
+## Levels: 3 4 5 6 7 8 9</code></pre>
+<pre class="r"><code>#Confusion Matrix Test
+cm1 = as.matrix(table(Actual = data_wine_whitetrain$quality2, Predicted = p))
+cm1</code></pre>
+<pre><code>##       Predicted
+## Actual   3   4   5   6   7   8   9
+##      3   0   1   5   7   0   1   0
+##      4   0   4  64  38   1   0   0
+##      5   0   0 425 393   4   0   0
+##      6   1   0 239 936  76   0   0
+##      7   0   0  19 355 107   1   0
+##      8   0   0   2  59  31   0   0
+##      9   0   0   0   1   3   0   0</code></pre>
+<pre class="r"><code>sum(diag(cm1))/length(data_wine_whitetrain$quality2)</code></pre>
+<pre><code>## [1] 0.530833</code></pre>
+<p>Training Set Accuracy is 53.08% :BAD NEWS AGAIN!!!!</p>
+</div>
+<div id="accuracy-on-test-set" class="section level3">
+<h3>Accuracy on Test Set</h3>
+<p>Accuray for the test set.</p>
+<pre class="r"><code>tst_pred &lt;- predict(o_lr, newdata = data_wine_whitetest, type = &quot;class&quot;)</code></pre>
+<pre class="r"><code>#Confusion Matrix Test
+cm2 &lt;- table(predicted = tst_pred, actual = data_wine_whitetest$quality2)
+cm2</code></pre>
+<pre><code>##          actual
+## predicted   3   4   5   6   7   8   9
+##         3   0   0   0   0   0   0   0
+##         4   0   0   0   0   0   0   0
+##         5   2  32 177  93   6   1   0
+##         6   3  14 171 410 156  26   0
+##         7   1   0   5  33  45  12   1
+##         8   0   0   0   0   0   0   0
+##         9   0   0   0   0   0   0   0</code></pre>
+<pre class="r"><code>sum(diag(cm2))/length(data_wine_whitetrain$quality2)</code></pre>
+<pre><code>## [1] 0.227912</code></pre>
+<p>Test Set Accuracy - 22.7 % BAD NEWS AGAIN!!!!
+Let’s now do a logistic regression.</p>
+</div>
+</div>
+<div id="binomial-logistic-regression-model" class="section level2">
+<h2>Binomial Logistic Regression Model</h2>
+<p>The variable to be predicted is binary and hence we use binomial logistic regression.
+Quality lower and equal than 5 is bad and greather than 5 is good.</p>
+<pre class="r"><code>data_wine_white$category[data_wine_white$quality &lt;= 5] &lt;- 0
+data_wine_white$category[data_wine_white$quality &gt; 5] &lt;- 1
+
+data_wine_white$category &lt;- as.factor(data_wine_white$category)
+head(data_wine_white)</code></pre>
+<pre><code>##    fixed.acidity volatile.acidity citric.acid residual.sugar chlorides
+## 1            7.0             0.27        0.36           20.7     0.045
+## 2            6.3             0.30        0.34            1.6     0.049
+## 3            8.1             0.28        0.40            6.9     0.050
+## 4            7.2             0.23        0.32            8.5     0.058
+## 7            6.2             0.32        0.16            7.0     0.045
+## 10           8.1             0.22        0.43            1.5     0.044
+##    free.sulfur.dioxide total.sulfur.dioxide density   pH sulphates alcohol
+## 1                   45                  170  1.0010 3.00      0.45     8.8
+## 2                   14                  132  0.9940 3.30      0.49     9.5
+## 3                   30                   97  0.9951 3.26      0.44    10.1
+## 4                   47                  186  0.9956 3.19      0.40     9.9
+## 7                   30                  136  0.9949 3.18      0.47     9.6
+## 10                  28                  129  0.9938 3.22      0.45    11.0
+##    quality quality2 category
+## 1        6        6        1
+## 2        6        6        1
+## 3        6        6        1
+## 4        6        6        1
+## 7        6        6        1
+## 10       6        6        1</code></pre>
+<div id="train-test-split" class="section level3">
+<h3>Train Test Split</h3>
+<pre class="r"><code>set.seed(3000)
+
+spl = sample.split(data_wine_white$category, SplitRatio = 0.7)
+
+data_wine_whitetrain = subset(data_wine_white, spl==TRUE)
+data_wine_whitetest = subset(data_wine_white, spl==FALSE)</code></pre>
+<p>Let’s run a quick and dirty logistic regression.</p>
+<pre class="r"><code>model_glm &lt;- glm(category ~ . - quality - quality2, data = data_wine_whitetrain, family=binomial(link = &quot;logit&quot;))
+model_gl &lt;- step(model_glm)</code></pre>
+<pre><code>## Start:  AIC=2821.85
+## category ~ (fixed.acidity + volatile.acidity + citric.acid + 
+##     residual.sugar + chlorides + free.sulfur.dioxide + total.sulfur.dioxide + 
+##     density + pH + sulphates + alcohol + quality + quality2) - 
+##     quality - quality2
+## 
+##                        Df Deviance    AIC
+## - total.sulfur.dioxide  1   2797.9 2819.9
+## - chlorides             1   2797.9 2819.9
+## - fixed.acidity         1   2798.0 2820.0
+## &lt;none&gt;                      2797.8 2821.8
+## - citric.acid           1   2800.2 2822.2
+## - free.sulfur.dioxide   1   2806.9 2828.9
+## - pH                    1   2809.7 2831.7
+## - density               1   2811.5 2833.5
+## - sulphates             1   2817.4 2839.4
+## - residual.sugar        1   2823.2 2845.2
+## - alcohol               1   2826.3 2848.3
+## - volatile.acidity      1   2916.6 2938.6
+## 
+## Step:  AIC=2819.87
+## category ~ fixed.acidity + volatile.acidity + citric.acid + residual.sugar + 
+##     chlorides + free.sulfur.dioxide + density + pH + sulphates + 
+##     alcohol
+## 
+##                       Df Deviance    AIC
+## - chlorides            1   2798.0 2818.0
+## - fixed.acidity        1   2798.0 2818.0
+## &lt;none&gt;                     2797.9 2819.9
+## - citric.acid          1   2800.2 2820.2
+## - pH                   1   2809.7 2829.7
+## - density              1   2811.8 2831.8
+## - free.sulfur.dioxide  1   2813.1 2833.1
+## - sulphates            1   2817.8 2837.8
+## - residual.sugar       1   2823.4 2843.4
+## - alcohol              1   2826.6 2846.6
+## - volatile.acidity     1   2920.6 2940.6
+## 
+## Step:  AIC=2817.97
+## category ~ fixed.acidity + volatile.acidity + citric.acid + residual.sugar + 
+##     free.sulfur.dioxide + density + pH + sulphates + alcohol
+## 
+##                       Df Deviance    AIC
+## - fixed.acidity        1   2798.2 2816.2
+## &lt;none&gt;                     2798.0 2818.0
+## - citric.acid          1   2800.3 2818.3
+## - pH                   1   2810.3 2828.3
+## - density              1   2812.6 2830.6
+## - free.sulfur.dioxide  1   2813.1 2831.1
+## - sulphates            1   2818.1 2836.1
+## - residual.sugar       1   2825.1 2843.1
+## - alcohol              1   2826.7 2844.7
+## - volatile.acidity     1   2922.7 2940.7
+## 
+## Step:  AIC=2816.17
+## category ~ volatile.acidity + citric.acid + residual.sugar + 
+##     free.sulfur.dioxide + density + pH + sulphates + alcohol
+## 
+##                       Df Deviance    AIC
+## &lt;none&gt;                     2798.2 2816.2
+## - citric.acid          1   2800.6 2816.6
+## - free.sulfur.dioxide  1   2813.1 2829.1
+## - pH                   1   2817.6 2833.6
+## - sulphates            1   2818.2 2834.2
+## - density              1   2824.1 2840.1
+## - residual.sugar       1   2841.8 2857.8
+## - alcohol              1   2863.4 2879.4
+## - volatile.acidity     1   2927.8 2943.8</code></pre>
+<p>what the prediction looks like.</p>
+<pre class="r"><code>head(fitted(model_gl))</code></pre>
+<pre><code>##         2         7        10        11        13        15 
+## 0.3085439 0.3942105 0.6825519 0.8508986 0.8124451 0.4915685</code></pre>
+<pre class="r"><code>head(predict(model_gl))</code></pre>
+<pre><code>##           2           7          10          11          13          15 
+## -0.80693550 -0.42964756  0.76552441  1.74166660  1.46597646 -0.03372931</code></pre>
+<pre class="r"><code>head(predict(model_gl, type = &quot;response&quot;))</code></pre>
+<pre><code>##         2         7        10        11        13        15 
+## 0.3085439 0.3942105 0.6825519 0.8508986 0.8124451 0.4915685</code></pre>
+</div>
+<div id="catagorizing-set" class="section level3">
+<h3>Catagorizing Set</h3>
+<pre class="r"><code>trn_pred &lt;- ifelse(predict(model_gl, type = &quot;response&quot;) &gt; 0.5,&quot;1&quot;, &quot;0&quot;)
+head(trn_pred)</code></pre>
+<pre><code>##   2   7  10  11  13  15 
+## &quot;0&quot; &quot;0&quot; &quot;1&quot; &quot;1&quot; &quot;1&quot; &quot;0&quot;</code></pre>
+<!-- ```{r Logistic7} -->
+<!-- lr_prediction <- predict(model_gl, data_wine_whitetrain, type = "response") -->
+<!-- library(pROC) -->
+<!-- ROC_lr <- roc(data_wine_whitetrain$category, lr_prediction) -->
+<!-- ROC_lr_auc <- auc(ROC_lr) -->
+<!-- plot(ROC_lr, col = "green", main = "ROC For Logistic Regression (GREEN)") -->
+<!-- paste("Accuracy % of logistic regression: ", mean(data_wine_whitetrain$category == round(lr_prediction, digits = 0))) -->
+<!-- ``` -->
+</div>
+<div id="confusion-matrix-on-training-set" class="section level3">
+<h3>Confusion Matrix on Training Set</h3>
+<p>Obtaining confusion matrix of the training data and ROC.</p>
+<pre class="r"><code> confusionMatrix(data = as.factor(trn_pred), reference = as.factor(data_wine_whitetrain$category),positive = &quot;1&quot;)</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction    0    1
+##          0  504  254
+##          1  440 1575
+##                                           
+##                Accuracy : 0.7497          
+##                  95% CI : (0.7332, 0.7658)
+##     No Information Rate : 0.6596          
+##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
+##                                           
+##                   Kappa : 0.4148          
+##                                           
+##  Mcnemar&#39;s Test P-Value : 2.179e-12       
+##                                           
+##             Sensitivity : 0.8611          
+##             Specificity : 0.5339          
+##          Pos Pred Value : 0.7816          
+##          Neg Pred Value : 0.6649          
+##              Prevalence : 0.6596          
+##          Detection Rate : 0.5680          
+##    Detection Prevalence : 0.7266          
+##       Balanced Accuracy : 0.6975          
+##                                           
+##        &#39;Positive&#39; Class : 1               
+## </code></pre>
+<p>We can see that Binomial Logistic Regression gives an training set accuracy of 74.97% (with confidence interval of [0.7332, 0.7658]): AT LEAST A GOOD NEW!!!!</p>
+</div>
+<div id="accuracy-on-test-set-1" class="section level3">
+<h3>Accuracy on Test Set</h3>
+<p>Confusion matrix for the test data.</p>
+<pre class="r"><code>tst_pred &lt;- ifelse(predict(model_gl, newdata = data_wine_whitetest, type = &quot;response&quot;) &gt; 0.5, &quot;1&quot;, &quot;0&quot;)
+tst_tab &lt;- table(predicted = tst_pred, actual = data_wine_whitetest$category)
+tst_tab</code></pre>
+<pre><code>##          actual
+## predicted   0   1
+##         0 212 110
+##         1 192 674</code></pre>
+<pre class="r"><code>sum(diag(tst_tab))/length(data_wine_whitetest$category)</code></pre>
+<pre><code>## [1] 0.7457912</code></pre>
+<pre class="r"><code> confusionMatrix(data = as.factor(tst_pred), reference=as.factor(data_wine_whitetest$category))</code></pre>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction   0   1
+##          0 212 110
+##          1 192 674
+##                                         
+##                Accuracy : 0.7458        
+##                  95% CI : (0.72, 0.7703)
+##     No Information Rate : 0.6599        
+##     P-Value [Acc &gt; NIR] : 9.769e-11     
+##                                         
+##                   Kappa : 0.4043        
+##                                         
+##  Mcnemar&#39;s Test P-Value : 3.146e-06     
+##                                         
+##             Sensitivity : 0.5248        
+##             Specificity : 0.8597        
+##          Pos Pred Value : 0.6584        
+##          Neg Pred Value : 0.7783        
+##              Prevalence : 0.3401        
+##          Detection Rate : 0.1785        
+##    Detection Prevalence : 0.2710        
+##       Balanced Accuracy : 0.6922        
+##                                         
+##        &#39;Positive&#39; Class : 0             
+## </code></pre>
+<p>We can see that Binomial Logistic Regression gives an test set accuracy of 74.58%.
+The two accuracy seems constant so no evidence of overfitting.
+One important thing to keep in mind even when the accuracy is good depending on the business are Sensitivity and Specificity.<br />
+Finaly good accuracy to go but how can we explain this results to the business?
+For business insights it’s important to understand which factors drive predictions and especially for each observations.<br />
+So let’s explain this prediction for a single observation.</p>
+<pre class="r"><code>drop &lt;- c(&quot;quality&quot;,&quot;quality2&quot;)
+data_wine_whitetrain2 = data_wine_whitetrain[,!(names(data_wine_whitetrain) %in% drop)]
+data_wine_whitetest2 = data_wine_whitetest[,!(names(data_wine_whitetest) %in% drop)]</code></pre>
+<pre class="r"><code>new_observation &lt;- data_wine_whitetest2[2,]
+new_observation</code></pre>
+<pre><code>##   fixed.acidity volatile.acidity citric.acid residual.sugar chlorides
+## 3           8.1             0.28         0.4            6.9      0.05
+##   free.sulfur.dioxide total.sulfur.dioxide density   pH sulphates alcohol
+## 3                  30                   97  0.9951 3.26      0.44    10.1
+##   category
+## 3        1</code></pre>
+<pre class="r"><code>print(&#39;following this observation, this category is a good wine&#39;)</code></pre>
+<pre><code>## [1] &quot;following this observation, this category is a good wine&quot;</code></pre>
+<p>Let’s create a custom predict function which returns probalilities.</p>
+<pre class="r"><code>p_fun &lt;- function(object, newdata) {
+   if (nrow(newdata) == 1) {
+      as.matrix(t(predict(object, newdata, type = &quot;prob&quot;)))
+   } else {
+     as.matrix(predict(object, newdata=newdata, type = &quot;prob&quot;))
+   }
+}</code></pre>
+<p>Now we create an object of the break_down class.</p>
+<pre class="r"><code>library(&quot;iBreakDown&quot;)</code></pre>
+<pre><code>## Warning: package &#39;iBreakDown&#39; was built under R version 3.6.2</code></pre>
+<pre class="r"><code>library(&quot;nnet&quot;)
+m_glm &lt;- multinom(category ~ . , data = data_wine_whitetest2, probabilities = TRUE, model = TRUE)</code></pre>
+<pre><code>## # weights:  13 (12 variable)
+## initial  value 823.458851 
+## iter  10 value 598.392466
+## iter  20 value 589.563401
+## iter  30 value 589.549279
+## iter  40 value 589.542788
+## iter  50 value 589.076016
+## iter  60 value 588.727363
+## final  value 588.725343 
+## converged</code></pre>
+<pre class="r"><code>bd_glm &lt;- local_attributions(m_glm,
+                            data = data_wine_whitetest2,
+                            new_observation =  new_observation,
+                            keep_distributions = TRUE,
+                            predict_function = p_fun)
+
+bd_glm</code></pre>
+<pre><code>##                                     contribution
+## multinom: intercept                        0.660
+## multinom: alcohol = 10                    -0.041
+## multinom: total.sulfur.dioxide = 97        0.042
+## multinom: density = 1                     -0.053
+## multinom: free.sulfur.dioxide = 30        -0.013
+## multinom: pH = 3.3                         0.019
+## multinom: sulphates = 0.44                -0.018
+## multinom: fixed.acidity = 8.1              0.010
+## multinom: citric.acid = 0.4                0.006
+## multinom: volatile.acidity = 0.28          0.007
+## multinom: chlorides = 0.05                 0.001
+## multinom: residual.sugar = 6.9             0.034
+## multinom: category = 1                     0.000
+## multinom: prediction                       0.654</code></pre>
+<p>And we can see how each variable contribute to the prediction to be good or bad wine for this observation.</p>
+<pre class="r"><code>plot(bd_glm)</code></pre>
+<p><img src="/posts/2020-02-09-r-rmarkdown_files/figure-html/iBreakDown5-1.png" width="672" /></p>
+<pre class="r"><code>plot(plot(bd_glm, baseline = 0))</code></pre>
+<p><img src="/posts/2020-02-09-r-rmarkdown_files/figure-html/iBreakDown6-1.png" width="672" /></p>
+<p>And the distributions of partial predictions for this observation.</p>
+<pre class="r"><code>plot(bd_glm, plot_distributions = TRUE)</code></pre>
+<p><img src="/posts/2020-02-09-r-rmarkdown_files/figure-html/iBreakDown7-1.png" width="672" /></p>
+<p>We could have a Dashboard or shiny application that can shows by selecting each observation which variables explain why the wine is for <strong><em>good</em></strong> or <strong><em>bad</em></strong> quality: it’s calls Make a studio for the model (<strong><em><a href="https://github.com/ModelOriented/modelStudio/blob/master/misc/MLinPL2019_modelStudio_poster.pdf" class="uri">https://github.com/ModelOriented/modelStudio/blob/master/misc/MLinPL2019_modelStudio_poster.pdf</a></em></strong>).<br />
+We can see that Binomial Logistic Regression gives a good accuracy to predict the quality of the wine.
+We get to know that chlorides, sulphates, pH, alcohol, volatile acidity and free sulphur dioxide are more statiscally significant in predicting the quality of Vinho Verde white wine.<br />
+Something else that is good to know is the variation of the prediction following the variable evolution.
+To assess this let’s perform a quick and dirty random forest.</p>
+</div>
+<div id="random-forest" class="section level3">
+<h3>Random Forest</h3>
+<p>It’s important to see the general variation of the prediction of the variables of the in the model. Let’s switch to another model: random Forest and a full datasets to perform with the same variables of the logistic previous model.</p>
+<pre class="r"><code>train  &lt;- data_wine_whitetrain2
+valid  &lt;- data_wine_whitetest2
+
+full_dataset&lt;-rbind(train,valid)</code></pre>
+<pre class="r"><code>library(&quot;DALEX&quot;)
+
+library(&quot;randomForest&quot;)
+set.seed(59)
+# Random Forest model trained on apartments data
+model_rf &lt;- randomForest(category ~ . ,
+               data = full_dataset)</code></pre>
+<p>The Confusion Matrix of this model:</p>
+<pre class="r"><code># Add predicted values to data frame
+df_rf&lt;-full_dataset &lt;- full_dataset %&gt;%
+  mutate(predicted = predict(model_rf))
+
+# Get performance measures
+confusionMatrix(df_rf$predicted, df_rf$category, positive = &quot;1&quot;)</code></pre>
+<p>Accuracy of 78.06% not so far from the Logistic regression.
+Now let’s get a look to the important variables in the model.
+We can see that alohol is the most important variable in the model, followed by density and volatile.acidity.</p>
+<pre class="r"><code>feat_imp_df &lt;- importance(model_rf) %&gt;%
+  data.frame() %&gt;%
+  mutate(feature = row.names(.))
+
+# plot dataframe
+ggplot(feat_imp_df, aes(x = reorder(feature, MeanDecreaseGini),
+                        y = MeanDecreaseGini)) +
+  geom_bar(stat=&#39;identity&#39;) +
+  coord_flip() +
+  theme_classic() +
+  labs(
+    x     = &quot;Feature&quot;,
+    y     = &quot;Importance&quot;,
+    title = &quot;Feature Importance: &lt;Model&gt;&quot;
+  )</code></pre>
+<p><img src="/posts/2020-02-09-r-rmarkdown_files/figure-html/variableimp3-1.png" width="672" /></p>
+<p>One of the main insigth for business is to get throw each variable, their prediction and variation.</p>
+<pre class="r"><code>explainer_rf &lt;- explain(model_rf, 
+                       data = full_dataset, y = data_wine_whitetrain2$category)</code></pre>
+<pre><code>## Preparation of a new explainer is initiated
+##   -&gt; model label       :  randomForest  ( [33m default [39m )
+##   -&gt; data              :  3961  rows  13  cols 
+##   -&gt; target variable   :  2773  values 
+##   -&gt; target variable   :  length of &#39;y&#39; is different than number of rows in &#39;data&#39; ( [31m WARNING [39m ) 
+##   -&gt; target variable   :  Please note that &#39;y&#39; is a factor.  ( [31m WARNING [39m )
+##   -&gt; target variable   :  Consider changing the &#39;y&#39; to a logical or numerical vector.
+##   -&gt; target variable   :  Otherwise I will not be able to calculate residuals or loss function.
+##   -&gt; predict function  :  yhat.randomForest  will be used ( [33m default [39m )
+##   -&gt; predicted values  :  numerical, min =  0.01 , mean =  0.6584918 , max =  1  
+##   -&gt; residual function :  difference between y and yhat ( [33m default [39m )
+##   -&gt; residuals         :  numerical, min =  NA , mean =  NA , max =  NA  
+##   -&gt; model_info        :  package randomForest , ver. 4.6.14 , task classification ( [33m default [39m ) 
+##  [32m A new explainer has been created! [39m</code></pre>
+<pre class="r"><code>library(&quot;pdp&quot;)
+expl_alcohol &lt;- feature_response(explainer_rf, &quot;alcohol&quot;, &quot;pdp&quot;)
+plot(expl_alcohol)</code></pre>
+<p><img src="/posts/2020-02-09-r-rmarkdown_files/figure-html/alcohol-1.png" width="672" /></p>
+<p>So when the alcohol get high, the prediction to get of good quality increase.
+Let’s do it for all the variables.</p>
+<pre class="r"><code>expl_density &lt;- feature_response(explainer_rf, &quot;density&quot;, &quot;pdp&quot;)
+plot(expl_density )</code></pre>
+<p><img src="/posts/2020-02-09-r-rmarkdown_files/figure-html/expl_density-1.png" width="672" /></p>
+<pre class="r"><code>expl_volatile.acidity &lt;- feature_response(explainer_rf, &quot;volatile.acidity&quot;, &quot;pdp&quot;)
+plot(expl_volatile.acidity )</code></pre>
+<p><img src="/posts/2020-02-09-r-rmarkdown_files/figure-html/expl_volatile.acidity-1.png" width="672" /></p>
+<pre class="r"><code>expl_free.sulfur.dioxide &lt;- feature_response(explainer_rf, &quot;free.sulfur.dioxide&quot;, &quot;pdp&quot;)
+plot(expl_free.sulfur.dioxide)</code></pre>
+<p><img src="/posts/2020-02-09-r-rmarkdown_files/figure-html/expl_free.sulfur.dioxide-1.png" width="672" /></p>
+<pre class="r"><code>expl_total.sulfur.dioxide &lt;- feature_response(explainer_rf, &quot;total.sulfur.dioxide&quot;, &quot;pdp&quot;)
+plot(expl_total.sulfur.dioxide)</code></pre>
+<p><img src="/posts/2020-02-09-r-rmarkdown_files/figure-html/expl_total.sulfur.dioxide-1.png" width="672" /></p>
+<pre class="r"><code>expl_chlorides &lt;- feature_response(explainer_rf, &quot;chlorides&quot;, &quot;pdp&quot;)
+plot(expl_chlorides)</code></pre>
+<p><img src="/posts/2020-02-09-r-rmarkdown_files/figure-html/expl_chlorides-1.png" width="672" /></p>
+<pre class="r"><code>expl_citric.acid &lt;- feature_response(explainer_rf, &quot;citric.acid&quot;, &quot;pdp&quot;)
+plot(expl_citric.acid)</code></pre>
+<p><img src="/posts/2020-02-09-r-rmarkdown_files/figure-html/expl_citric.acid-1.png" width="672" /></p>
+<pre class="r"><code>expl_residual.sugar &lt;- feature_response(explainer_rf, &quot;residual.sugar&quot;, &quot;pdp&quot;)
+plot(expl_residual.sugar)</code></pre>
+<p><img src="/posts/2020-02-09-r-rmarkdown_files/figure-html/expl_residual.sugar-1.png" width="672" /></p>
+<pre class="r"><code>expl_pH &lt;- feature_response(explainer_rf, &quot;pH&quot;, &quot;pdp&quot;)
+plot(expl_pH)</code></pre>
+<p><img src="/posts/2020-02-09-r-rmarkdown_files/figure-html/expl_pH-1.png" width="672" /></p>
+<pre class="r"><code>expl_sulphates &lt;- feature_response(explainer_rf, &quot;sulphates&quot;, &quot;pdp&quot;)
+plot(expl_sulphates)</code></pre>
+<p><img src="/posts/2020-02-09-r-rmarkdown_files/figure-html/expl_sulphates-1.png" width="672" /></p>
+<pre class="r"><code>expl_fixed.acidity &lt;- feature_response(explainer_rf, &quot;fixed.acidity&quot;, &quot;pdp&quot;)
+plot(expl_fixed.acidity)</code></pre>
+<p><img src="/posts/2020-02-09-r-rmarkdown_files/figure-html/expl_fixed.acidity-1.png" width="672" /></p>
+<p>All those results are nice to have for insights and we could do much more.</p>
+</div>
+</div>
+</div>
+<div id="citations" class="section level1">
+<h1>Citations</h1>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Data Analytics, QueleAnalytics<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>(James et al. 2014)<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>(James et al. 2014,P. Bruce and Bruce (2017))<a href="#fnref3" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
+
+  </article>
+
+  <br/>
+
+  
+      <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "yourdiscussshortname" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  
+  
+</section>
+
+      </div>
+      
+        <footer class="footer">
+  <section class="container">
+    
+    
+      <p>Maurice TEKO</p>
+    
+     
+
+  </section>
+</footer>
+<div class="fixed-bar">
+  <section class="container">
+    
+      <p id="privateTriggerText">voulez vous me connaitre d&#39;avantage? Mes coordonnées sont dans CONTACT.  <a id="privateTrigger">Click!</a></p>
+    
+    
+  </section>
+</div>
+
+      
+    </main>
+
+    
+
+  <script src="/js/app.js"></script>
+  
+  <script>
+  (function($) {
+    $(function() {
+      $('#privateTrigger').on('click', function() {
+        $('.private').slideToggle();
+        $('#privateTriggerText').text("Un tout grand merci! Et partagez si vous aimez.");
+      });
+    });
+   })(jQuery);
+  </script>
+  
+  </body>
+</html>

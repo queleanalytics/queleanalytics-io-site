@@ -1,0 +1,834 @@
+---
+title: 'Predict Wine quality with data analytics (Part 2)'
+author:
+- Maurice TEKO, Data Scientist^[Data Analytics, QueleAnalytics]
+date: "2020-02-09T00:00:57-07:00"
+tags: [R, RStudio]
+lang: English  
+output:
+html_document:
+    toc: yes
+---
+
+
+Part II of ***Predict Wine quality with data analytics*** .  
+
+# Objective    
+I finished 2019 with a nice project for a client in the wine industry. I wanted materials linked to wine to popularize how ***Data*** and ***Analytics*** could help business gain more value. 
+<!-- To convince my client i wanted to show him a business case.  -->
+In the perspective of how we could use analytics for his business, I point up a case widely known in the data science community using analytics to predict wine quality. The case is about predicting the quality of the ***Vinho Verde*** wine based on various psychochemical tests only. 
+***Vinho Verde*** is exclusively produced in the demarcated region of Vinho Verde in northwestern Portugal, it is only produced from the indigenous grape varieties of the region, preserving its typicity of aromas and flavors.  From there we will plan ***Data strategy*** based on Company data for business perspectives: ***Real time (Sales Dashboarding, KPI, ROI)***, ***Next best buy***, ***upsell***, ***Customer experience***, ***campaign***,  ...    
+This report is a ***quick and dirty*** analysis to prepare a presentation.
+
+<!-- {r library_and_dataload,  echo=F, error=FALSE, warning=FALSE, message=FALSE} -->
+
+```{r library_and_dataload,  results="hide", echo=F, error=FALSE, warning=FALSE, message=FALSE}
+
+library("rvest")
+library("dplyr")
+library("foreach")
+library("rlang")
+library("DT")
+library("caTools")
+library("corrplot")
+library("DataExplorer")
+
+data_wine_white = read.table("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv",
+                             header=T,sep=";",na.strings="NA") 
+
+
+library(DT)
+data_wine_white <- data_wine_white[!duplicated(data_wine_white), ]
+library(broom)
+skewness_asisit<-tidy(data_wine_white)
+skewness_wine_white<-skewness_asisit%>%
+  select(column, mean, skew) 
+# print(skewness_wine_white)
+
+library("caret")
+preprocess_wine_white <- preProcess(data_wine_white[,1:11], c("BoxCox", "center", "scale"))
+new_wine_white <- data.frame(trans = predict(preprocess_wine_white, data_wine_white))
+
+
+
+skewness<-tidy(new_wine_white)
+skewness_new_wine_white<-skewness%>%
+  select(column, skew) 
+# print(skewness_new_wine_white)
+
+
+new_wine_white <- new_wine_white[!abs(new_wine_white$trans.fixed.acidity) > 3,]
+new_wine_white <- new_wine_white[!abs(new_wine_white$trans.volatile.acidity) > 3,]
+new_wine_white <- new_wine_white[!abs(new_wine_white$trans.citric.acid) > 3,]
+new_wine_white <- new_wine_white[!abs(new_wine_white$trans.residual.sugar) > 3,]
+new_wine_white <- new_wine_white[!abs(new_wine_white$trans.chlorides) > 3,]
+new_wine_white <- new_wine_white[!abs(new_wine_white$trans.density) > 3,]
+new_wine_white <- new_wine_white[!abs(new_wine_white$trans.pH) > 3,]
+new_wine_white <- new_wine_white[!abs(new_wine_white$trans.sulphates) > 3,]
+new_wine_white <- new_wine_white[!abs(new_wine_white$trans.alcohol) > 3,]
+
+
+library("rmdformats") 
+library("corrgram")
+library("MASS")
+library("ggplot2")
+library("naniar")
+library("e1071")
+library("lattice")
+library("viridisLite")
+#library("viridis")
+library('versions')
+library("data.table")
+library("stringr")
+library("ggplot2")
+library("rmarkdown")
+library("pander")
+library("knitr")
+library("caret") 
+library("tidyr")
+library("gridExtra")
+library("grid")
+require("VIF")
+require("cvTools")
+require("marmap")
+library("htmltools")
+library("vembedr")
+```
+
+
+
+
+# Models
+In this work, machine learning techniques are used to determine dependency of wine quality on other variables and in wine quality predictions. This section suumarise all insights of proposed methodology.  
+1 - Linear Model  
+2 - Ordinal logistic Regression  
+3 - Logistic Regression  
+4 - Random forest,Boosting Algorithms and Bagging Algorithms.  
+5 - Ensemble models  
+
+## Linear Model
+Linear regression is an analysis that assesses whether one or more predictor variables explain the dependent (criterion) variable. 
+This is not always the best model, but it's okay to start with, so that we have a basic sense of the relationship between the independent variable and dependent variable. The R2 values of our models are not good.
+The regression has five key assumptions:
+***Assumption for linear model***  
+Linear relationship, No or little multicollinearity, Multivariate normality, No auto-correlation, Homoscedasticity.     
+Let's before create our model split the data on Train-Test Set.  
+Train-Test split is a practice that is followed in the model building and evaluation workflow. Testing your dataset on a testing data that is totally excluded from the training data helps us find whether the model is overfitting or underfitting atleast.
+Separating the data enables to evaluate the model generalization capabilities and have an idea of how it would perform on unseen data.
+
+```{r loadlibsensemble}
+library("rmdformats") 
+library("corrgram")
+library("MASS")
+library("ggplot2")
+library("naniar")
+library("e1071")
+library("lattice")
+```
+
+### Step 1 : Are all the hypotheses  met for a linear model?
+
+
+```{r Train-Test}
+set.seed(100)  
+trainingRowIndex <- sample(1:nrow(new_wine_white), 0.8*nrow(new_wine_white))  
+wine_whitetrain <- new_wine_white[trainingRowIndex, ]  
+wine_whitetest  <- new_wine_white[-trainingRowIndex, ]
+```
+
+   
+Let's see if all the hypotheses are met for a linear model.  
+Do all the variables entered in the model? 
+
+```{r message=FALSE, warning=FALSE}
+linear_for_multicoli_1 <- lm(trans.quality ~ . , wine_whitetrain) # taking all the points.
+summary(linear_for_multicoli_1)
+```
+
+ multicollinearity?  
+In multiple regression, two or more predictor variables might be correlated with each other. This situation is referred as collinearity. This means that there is redundancy between predictor variables. In the presence of multicollinearity, the solution of the regression model becomes unstable. For a given predictor (p), multicollinearity can assessed by computing a score called the variance inflation factor (or VIF), which measures how much the variance of a regression coefficient is inflated due to multicollinearity in the model.
+
+The smallest possible value of VIF is one (absence of multicollinearity). As a rule of thumb, a VIF value that exceeds 5 or 10 indicates a problematic amount of collinearity [^1]. When faced to multicollinearity, the concerned variables should be removed, since the presence of multicollinearity implies that the information that this variable provides about the response is redundant in the presence of the other variables [^2].
+In the presence of multicollinearity, the solution of the regression model becomes unstable.
+
+ Let's plot acorrelation plot as previously and compute the VIF.
+
+
+
+```{r corrgram2}
+library("corrgram")
+plot_correlation(wine_whitetrain, cor_args = list( 'use' = 'complete.obs'))
+
+```
+
+
+
+```{r message=FALSE, warning=FALSE}
+car::vif(linear_for_multicoli_1)
+```
+
+We can see multicollinarity over here.  the VIF score for the predictor variable trans.density is very high (VIF = 16.33). This might be problematic.We remove trans.density because it exibits multicollinarity.
+Now let's restart fitting the new model by withdrawing trans.density and recompute VIF.
+
+
+```{r linear_for_multicoli_2}
+linear_for_multicoli_2 <- lm(trans.quality ~ . -trans.density , wine_whitetrain)
+ summary(linear_for_multicoli_2)
+```
+
+
+
+```{r vif2}
+linear_for_multicoli_2 <- lm(trans.quality ~ . -trans.density , wine_whitetrain)
+summary(linear_for_multicoli_2)
+
+#Make predictions
+predictions <- linear_for_multicoli_2 %>% predict(wine_whitetest)
+
+#Model performance" 
+model_performence_vif1<-data.frame(
+  RMSE = RMSE(predictions, wine_whitetest$trans.quality),
+  R2 = R2(predictions, wine_whitetest$trans.quality)
+)
+table(model_performence_vif1)
+
+```
+
+
+
+
+
+the variable trans.fixed.acidity is not significant ON the same level of the other variables, let's withdraw it and We fit another model.
+
+```{r vif3}
+linear_for_multicoli_3 <- lm(trans.quality ~ . -trans.density - trans.fixed.acidity, wine_whitetrain)
+summary(linear_for_multicoli_3)
+```
+
+
+
+same comment for trans.citric.acid. We refit another model removing trans.citric.acid.
+
+
+```{r message=FALSE, warning=FALSE}
+linear_for_multicoli_4 <- lm(trans.quality ~ . -trans.density - trans.fixed.acidity - trans.citric.acid, wine_whitetrain)
+summary(linear_for_multicoli_4)
+```
+
+
+
+```{r linear_for_multicoli_4}
+car::vif(linear_for_multicoli_4)
+```
+
+At this step results seems good to go.  
+What about the Homoscedasticity?   
+Analysis of variance (ANOVA) generalizes the t-test to more than two groups. It is useful for comparing (testing) three or more group means for statistical significance.
+
+
+```{r anovaresults, message=FALSE, warning=FALSE}
+anova(linear_for_multicoli_4)
+
+```
+
+
+```{r message=FALSE, warning=FALSE}
+par(mfrow=c(2,2), oma = c(1,1,0,0) + 0.1, mar = c(3,3,1,1) + 0.1)
+plot(linear_for_multicoli_4)
+```
+
+
+
+
+
+The F- Statistic - p value <= 2.2e -16.  
+We can see that p value is less than 0.05. Thus we can reject the null hypothesis and accept the alternate hypothesis. Thus,we can say that the model is significant.  
+
+
+### The Retain model
+
+```{r stepwise1}
+steplinear <- step(linear_for_multicoli_4)
+summary(steplinear)
+```
+
+
+```{r stepwise2}
+par(mfrow=c(2,2), oma = c(1,1,0,0) + 0.1, mar = c(3,3,1,1) + 0.1)
+plot(steplinear)
+```
+
+
+Residuals vs Fitted plot shows if residuals have non-linear patterns.Residuals around a horizontal line without distinct patterns, that is a good indication we don't have non-linear relationships. Normal QQ plot shows residuals fitting the line. Hence, can call it norlly distibuted residuals.
+
+Scale-Location plot shows if residuals are spread equally along the ranges of predictors. This is how you can check the assumption of equal variance (homoscedasticity). It's good if you see a horizontal line with equally (randomly) spread points.
+
+Residuals vs Leverage plot has a typical look when there is some influential case. You can barely see Cook's distance lines (a red dashed line) because all cases are well inside of the Cook's distance.
+
+### Predicting on Trained Set
+Predict is a generic function for predictions from the results of various model fitting functions. The function invokes particular methods which depend on the class of the first argument.
+
+```{r Predicting_Trained}
+distPred <- predict(steplinear, wine_whitetrain)  
+head(distPred)
+```
+
+
+Converting the Number to a Whole Number.
+We use the ceiling operation for rounding the numeric values towards near integer values.
+
+
+```{r distPred1}
+distPred1 <- ceiling(distPred)
+head(distPred1)
+```
+
+
+### Confusion Matrix on Training Data 
+ Frequency tables with condition and cross tabulations.
+
+
+```{r trn_tab}
+trn_tab <- table(predicted = distPred1, actual = wine_whitetrain$trans.quality)
+trn_tab
+```
+
+We check the overall accuracy of the linear model.
+
+```{r trn_tab_accuracy}
+sum(diag(trn_tab))/length(wine_whitetest$trans.quality)
+```
+
+
+Accuracy Prediction over train set Linear Model is 27% : BAD NEW!!!
+
+###  Confusion Matrix on Validating Data
+
+Testing or Validating the Model.
+
+
+```{r distPred_validation}
+distPred <- predict(steplinear, wine_whitetest)  
+head(distPred)
+```
+
+
+
+Round the numeric values to the nearest integer values.
+
+
+
+```{r distPred_validation2}
+distPred1 <- ceiling(distPred)
+head(distPred1)
+```
+
+
+
+```{r distPred_validation3}
+tst_tab <- table(predicted = distPred1, actual = wine_whitetest$trans.quality)
+tst_tab
+```
+
+Checking the accuracy of the test data.
+
+```{r accuracy_tes, message=FALSE, warning=FALSE}
+sum(diag(tst_tab))/length(wine_whitetest$trans.quality)
+```
+
+
+Accuracy Prediction over test set Linear Model is 5.8% : Very very bad news!!!!
+So we won't go for this model. Many things to say to accurate the model but it's not the purpose here.
+And if we try a quick Ordinal Logistic Regression Model?
+
+## Ordinal Logistic Regression Model
+
+No major Assumptions are need for Ordinal logistic regression. The ordinal logistic regression requires the dependent variable to be ordinal. 
+
+
+```{r message=FALSE, warning=FALSE}
+data_wine_white$quality2 <- as.factor(data_wine_white$quality)
+```
+
+### Train - Test Set
+
+
+```{r splitdataOrdinal}
+set.seed(3000)
+spl = sample.split(data_wine_white$quality2, SplitRatio = 0.7)
+
+data_wine_whitetrain = subset(data_wine_white, spl==TRUE)
+data_wine_whitetest = subset(data_wine_white, spl==FALSE)
+
+head(data_wine_whitetrain)
+```
+
+
+Fitting ordinal logistic regression Model
+
+```{r ordinalmodel1}
+require(MASS)
+require(reshape2)
+o_lrm <- polr(quality2 ~ . - quality, data = data_wine_whitetrain, Hess=TRUE)
+```
+
+
+
+```{r ordinalmodel1_1, message=FALSE, warning=FALSE}
+o_lrm <- polr(quality2 ~ . - quality, data = data_wine_whitetrain, Hess=TRUE)
+```
+
+should not use vif to check for multicollinarilty in case of categorical veriable. 
+
+```{r ordinalmodel1_2}
+car::vif(o_lrm)
+```
+
+
+
+```{r ordinalmodel1_3}
+summary(o_lrm)
+```
+
+
+Smaller the AIC better is the model. So let's try step wise logistic regression.
+
+```{r ordinalmodel1_4}
+
+o_lr = step(o_lrm)
+```
+
+
+ 
+
+
+We see some of the variables got eliminated.
+
+fixed.acidity, alcohol, density, sulphates, pH, free.sulfur.dioxide, residual.sugar, volatile.acidity are the variables being considered.
+
+```{r ordinalmodel1_5}
+head(fitted(o_lr))
+```
+
+
+### Accuracy on Training Set 
+
+
+```{r ordinalmodel1_6}
+p <- predict(o_lr, type = "class") 
+head(p)
+```
+
+
+
+```{r ordinalmodel1_7}
+#Confusion Matrix Test
+cm1 = as.matrix(table(Actual = data_wine_whitetrain$quality2, Predicted = p))
+cm1
+```
+
+
+```{r ordinalmodel1_8}
+sum(diag(cm1))/length(data_wine_whitetrain$quality2)
+
+```
+
+Training Set Accuracy is 53.08% :BAD NEWS AGAIN!!!!
+
+### Accuracy on Test Set 
+Accuray for the test set.
+
+```{r ordinalmodel1_9}
+tst_pred <- predict(o_lr, newdata = data_wine_whitetest, type = "class")
+
+```
+
+
+```{r ordinalmodel1_10}
+
+#Confusion Matrix Test
+cm2 <- table(predicted = tst_pred, actual = data_wine_whitetest$quality2)
+cm2
+```
+
+
+```{r ordinalmodel1_11}
+sum(diag(cm2))/length(data_wine_whitetrain$quality2)
+```
+
+
+Test Set Accuracy - 22.7 % BAD NEWS AGAIN!!!!
+Let's now do a logistic regression.
+
+## Binomial Logistic Regression Model
+The variable to be predicted is binary and hence we use binomial logistic regression.
+Quality lower and equal than 5 is bad and greather than 5 is good.
+
+```{r Logistic1}
+data_wine_white$category[data_wine_white$quality <= 5] <- 0
+data_wine_white$category[data_wine_white$quality > 5] <- 1
+
+data_wine_white$category <- as.factor(data_wine_white$category)
+head(data_wine_white)
+```
+
+
+
+
+### Train Test Split
+
+```{r Logistic2}
+set.seed(3000)
+
+spl = sample.split(data_wine_white$category, SplitRatio = 0.7)
+
+data_wine_whitetrain = subset(data_wine_white, spl==TRUE)
+data_wine_whitetest = subset(data_wine_white, spl==FALSE)
+
+```
+
+
+
+Let's run a quick and dirty logistic regression.
+
+
+```{r Logistic3}
+model_glm <- glm(category ~ . - quality - quality2, data = data_wine_whitetrain, family=binomial(link = "logit"))
+model_gl <- step(model_glm)
+```
+
+what the prediction looks like.
+
+```{r Logistic4, message=FALSE, warning=FALSE}
+head(fitted(model_gl))
+```
+
+```{r Logistic5}
+head(predict(model_gl))
+```
+
+```{r Logistic6}
+head(predict(model_gl, type = "response"))
+```
+
+### Catagorizing Set
+
+```{r Logistic7}
+trn_pred <- ifelse(predict(model_gl, type = "response") > 0.5,"1", "0")
+head(trn_pred)
+```
+
+<!-- ```{r Logistic7} -->
+<!-- lr_prediction <- predict(model_gl, data_wine_whitetrain, type = "response") -->
+
+<!-- library(pROC) -->
+<!-- ROC_lr <- roc(data_wine_whitetrain$category, lr_prediction) -->
+
+<!-- ROC_lr_auc <- auc(ROC_lr) -->
+
+<!-- plot(ROC_lr, col = "green", main = "ROC For Logistic Regression (GREEN)") -->
+<!-- paste("Accuracy % of logistic regression: ", mean(data_wine_whitetrain$category == round(lr_prediction, digits = 0))) -->
+
+
+<!-- ``` -->
+
+
+
+
+### Confusion Matrix on Training Set
+Obtaining confusion matrix of the training data and ROC.
+
+
+```{r Logistic8}
+ confusionMatrix(data = as.factor(trn_pred), reference = as.factor(data_wine_whitetrain$category),positive = "1")
+ 
+
+```
+
+
+We can see that Binomial Logistic Regression gives an training set accuracy of 74.97% (with confidence interval of [0.7332, 0.7658]): AT LEAST A GOOD NEW!!!!
+
+### Accuracy on Test Set 
+Confusion matrix for the test data.
+
+
+```{r message=FALSE, warning=FALSE}
+
+tst_pred <- ifelse(predict(model_gl, newdata = data_wine_whitetest, type = "response") > 0.5, "1", "0")
+tst_tab <- table(predicted = tst_pred, actual = data_wine_whitetest$category)
+tst_tab
+
+```
+
+
+```{r message=FALSE, warning=FALSE}
+sum(diag(tst_tab))/length(data_wine_whitetest$category)
+
+ confusionMatrix(data = as.factor(tst_pred), reference=as.factor(data_wine_whitetest$category))
+```
+
+We can see that Binomial Logistic Regression gives an test set accuracy of  74.58%.
+The two accuracy seems constant so no evidence of overfitting.
+One important thing to keep in mind even when the accuracy is good depending on the business are  Sensitivity and Specificity.  
+Finaly good accuracy to go but how can we explain this results to the business?
+For business insights it's important to understand which factors drive predictions and especially for each observations.  
+So let's explain this prediction for a single observation.
+
+```{r iBreakDown1}
+drop <- c("quality","quality2")
+data_wine_whitetrain2 = data_wine_whitetrain[,!(names(data_wine_whitetrain) %in% drop)]
+data_wine_whitetest2 = data_wine_whitetest[,!(names(data_wine_whitetest) %in% drop)]
+
+```
+
+
+
+
+```{r iBreakDown2}
+new_observation <- data_wine_whitetest2[2,]
+new_observation
+print('following this observation, this category is a good wine')
+```
+
+Let's create a custom predict function which returns probalilities.
+
+```{r iBreakDown3}
+p_fun <- function(object, newdata) {
+   if (nrow(newdata) == 1) {
+      as.matrix(t(predict(object, newdata, type = "prob")))
+   } else {
+     as.matrix(predict(object, newdata=newdata, type = "prob"))
+   }
+}
+
+```
+
+Now we create an object of the break_down class. 
+
+
+```{r iBreakDown4}
+library("iBreakDown")
+
+library("nnet")
+m_glm <- multinom(category ~ . , data = data_wine_whitetest2, probabilities = TRUE, model = TRUE)
+
+bd_glm <- local_attributions(m_glm,
+                            data = data_wine_whitetest2,
+                            new_observation =  new_observation,
+                            keep_distributions = TRUE,
+                            predict_function = p_fun)
+
+bd_glm
+
+```
+And we can see how each variable contribute to the prediction to be good or bad wine for this observation.
+```{r iBreakDown5}
+
+plot(bd_glm)
+```
+
+
+```{r iBreakDown6}
+
+plot(plot(bd_glm, baseline = 0))
+```
+
+And the distributions of partial predictions for this observation.
+
+```{r iBreakDown7}
+plot(bd_glm, plot_distributions = TRUE)
+```
+
+We could have a Dashboard or shiny application that can shows by selecting each observation which variables explain why the wine is for ***good*** or ***bad*** quality: it's calls  Make a studio for the model (***https://github.com/ModelOriented/modelStudio/blob/master/misc/MLinPL2019_modelStudio_poster.pdf***).  
+We can see that Binomial Logistic Regression gives a good accuracy to predict the quality of the wine.
+We get to know that chlorides, sulphates, pH, alcohol, volatile acidity and free sulphur dioxide are more statiscally significant in predicting the quality of Vinho Verde white wine.    
+Something else that is good to know is the variation of the prediction following the variable evolution.
+To assess this let's perform a quick and dirty random forest.
+
+### Random Forest
+
+It's important to see the general variation of the prediction of the variables of the in the model. Let's switch to another model: random Forest and a full datasets to perform with the same variables of the logistic previous model.
+
+```{r full_dataset}
+
+train  <- data_wine_whitetrain2
+valid  <- data_wine_whitetest2
+
+full_dataset<-rbind(train,valid)
+
+
+```
+ 
+
+
+
+```{r model_rf, results='hide',error=FALSE, warning=FALSE, message=FALSE}
+
+library("DALEX")
+
+library("randomForest")
+set.seed(59)
+# Random Forest model trained on apartments data
+model_rf <- randomForest(category ~ . ,
+               data = full_dataset)
+
+
+```
+
+The Confusion Matrix of this model:
+
+```{r model_rf2, results='hide',error=FALSE, warning=FALSE, message=FALSE}
+
+# Add predicted values to data frame
+df_rf<-full_dataset <- full_dataset %>%
+  mutate(predicted = predict(model_rf))
+
+# Get performance measures
+confusionMatrix(df_rf$predicted, df_rf$category, positive = "1")
+
+
+```
+
+Accuracy of 78.06% not so far from the Logistic regression.
+Now let's get a look to the important variables in the model.
+We can see that alohol is the most important variable in the model, followed by density and volatile.acidity.
+
+```{r variableimp3}
+feat_imp_df <- importance(model_rf) %>%
+  data.frame() %>%
+  mutate(feature = row.names(.))
+
+# plot dataframe
+ggplot(feat_imp_df, aes(x = reorder(feature, MeanDecreaseGini),
+                        y = MeanDecreaseGini)) +
+  geom_bar(stat='identity') +
+  coord_flip() +
+  theme_classic() +
+  labs(
+    x     = "Feature",
+    y     = "Importance",
+    title = "Feature Importance: <Model>"
+  )
+
+```
+
+One of the main insigth for business is to get throw each variable, their prediction and variation.
+
+```{r alcohol,error=FALSE, warning=FALSE, message=FALSE}
+
+
+explainer_rf <- explain(model_rf, 
+                       data = full_dataset, y = data_wine_whitetrain2$category)
+library("pdp")
+expl_alcohol <- feature_response(explainer_rf, "alcohol", "pdp")
+plot(expl_alcohol)
+
+```
+
+So when the alcohol get high, the prediction to get of good quality increase.
+Let's do it for all the variables.     
+
+  
+```{r expl_density}
+
+expl_density <- feature_response(explainer_rf, "density", "pdp")
+plot(expl_density )
+
+```
+
+  
+```{r expl_volatile.acidity}
+
+expl_volatile.acidity <- feature_response(explainer_rf, "volatile.acidity", "pdp")
+plot(expl_volatile.acidity )
+
+```
+
+```{r expl_free.sulfur.dioxide, results='hide',error=FALSE, warning=FALSE, message=FALSE}
+expl_free.sulfur.dioxide <- feature_response(explainer_rf, "free.sulfur.dioxide", "pdp")
+plot(expl_free.sulfur.dioxide)
+
+```
+
+
+
+
+```{r expl_total.sulfur.dioxide, results='hide',error=FALSE, warning=FALSE, message=FALSE}
+expl_total.sulfur.dioxide <- feature_response(explainer_rf, "total.sulfur.dioxide", "pdp")
+plot(expl_total.sulfur.dioxide)
+
+```
+
+
+ 
+```{r expl_chlorides}
+
+
+expl_chlorides <- feature_response(explainer_rf, "chlorides", "pdp")
+plot(expl_chlorides)
+
+```
+
+```{r expl_citric.acid, results='hide',error=FALSE, warning=FALSE, message=FALSE}
+
+expl_citric.acid <- feature_response(explainer_rf, "citric.acid", "pdp")
+plot(expl_citric.acid)
+
+```
+
+
+
+```{r expl_residual.sugar, results='hide',error=FALSE, warning=FALSE, message=FALSE}
+
+expl_residual.sugar <- feature_response(explainer_rf, "residual.sugar", "pdp")
+plot(expl_residual.sugar)
+
+```
+
+
+
+
+
+
+
+
+
+
+```{r expl_pH}
+
+expl_pH <- feature_response(explainer_rf, "pH", "pdp")
+plot(expl_pH)
+
+```
+
+
+
+
+
+```{r expl_sulphates}
+
+expl_sulphates <- feature_response(explainer_rf, "sulphates", "pdp")
+plot(expl_sulphates)
+                        
+
+```
+
+
+
+ 
+
+```{r expl_fixed.acidity}
+
+expl_fixed.acidity <- feature_response(explainer_rf, "fixed.acidity", "pdp")
+plot(expl_fixed.acidity)
+```
+
+
+All those results are nice to have for insights and we could do much more.  
+
+# Citations
+[^1]: (James et al. 2014)
+[^2]: (James et al. 2014,P. Bruce and Bruce (2017))
+
+
+
