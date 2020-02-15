@@ -6,10 +6,39 @@
     <description>Recent content in RStudio on LE BLOG DE QUELEANALYTICS</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>fr</language>
-    <lastBuildDate>Tue, 26 Nov 2019 00:00:57 -0700</lastBuildDate>
+    <lastBuildDate>Mon, 10 Feb 2020 00:00:57 -0700</lastBuildDate>
     
 	<atom:link href="/tags/rstudio/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Predict Wine quality with data analytics (Part 3)</title>
+      <link>/posts/2020-02-10-r-rmarkdown/</link>
+      <pubDate>Mon, 10 Feb 2020 00:00:57 -0700</pubDate>
+      
+      <guid>/posts/2020-02-10-r-rmarkdown/</guid>
+      <description>Third part of Predict Wine quality with data analytics.
+ObjectiveI finished 2019 with a nice project for a client in the wine industry. I wanted materials linked to wine to popularize how Data and Analytics could help business gain more value.In the perspective of how we could use analytics for his business, I point up a case widely known in the data science community using analytics to predict wine quality.</description>
+    </item>
+    
+    <item>
+      <title>Predict Wine quality with data analytics (Part 2)</title>
+      <link>/posts/2020-02-09-r-rmarkdown/</link>
+      <pubDate>Sun, 09 Feb 2020 00:00:57 -0700</pubDate>
+      
+      <guid>/posts/2020-02-09-r-rmarkdown/</guid>
+      <description>Part II of Predict Wine quality with data analytics .
+ObjectiveI finished 2019 with a nice project for a client in the wine industry. I wanted materials linked to wine to popularize how Data and Analytics could help business gain more value.In the perspective of how we could use analytics for his business, I point up a case widely known in the data science community using analytics to predict wine quality.</description>
+    </item>
+    
+    <item>
+      <title>Predict Wine quality with data analytics (Part 1)</title>
+      <link>/posts/2020-02-08-r-rmarkdown/</link>
+      <pubDate>Sat, 08 Feb 2020 00:00:57 -0700</pubDate>
+      
+      <guid>/posts/2020-02-08-r-rmarkdown/</guid>
+      <description>ObjectiveI finished 2019 with a nice project for a client in the wine industry. I wanted materials linked to wine to popularize how Data and Analytics could help business gain more value.In the perspective of how we could use analytics for his business, I point up a case widely known in the data science community using analytics to predict wine quality.</description>
+    </item>
     
     <item>
       <title>Introduction</title>
