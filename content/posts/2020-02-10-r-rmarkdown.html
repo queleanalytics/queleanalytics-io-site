@@ -58,22 +58,9 @@ library(lime)       # for explaining predictions
 library(lattice)
 library(ggplot2)
 library(&quot;C50&quot;)
-
-# 
-# 
-# library(&quot;DALEX&quot;)
-# library(&quot;iBreakDown&quot;)
-# library(&quot;randomForest&quot;)
 set.seed(1313)
 
-# 
-# 
-# 
-# library(&quot;data.table&quot;)
-# library(&quot;haven&quot;)
-# source(&quot;age_calc.R&quot;)
-# library(tidyr)
-# library(dplyr)
+
 
 
   control &lt;- trainControl(method=&quot;repeatedcv&quot;, number=10, repeats=3)
@@ -117,28 +104,8 @@ and <strong><em>Random Forest</em></strong>.</p>
 <p>Here a summary of the results in this plot below.</p>
 <pre class="r"><code> # summarize results
 bagging_results &lt;- resamples(list(treebag=fit.treebag, rf=fit.rf,c5.0=fit.c50, gbm=fit.gbm))
-summary(bagging_results)</code></pre>
-<pre><code>## 
-## Call:
-## summary.resamples(object = bagging_results)
-## 
-## Models: treebag, rf, c5.0, gbm 
-## Number of resamples: 30 
-## 
-## Accuracy 
-##              Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
-## treebag 0.7153652 0.7449495 0.7651515 0.7601690 0.7752525 0.7833753    0
-## rf      0.7373737 0.7672356 0.7790404 0.7765766 0.7919048 0.8080808    0
-## c5.0    0.7279597 0.7556818 0.7727273 0.7658895 0.7777778 0.8005051    0
-## gbm     0.7247475 0.7525253 0.7739899 0.7693390 0.7853535 0.8055556    0
-## 
-## Kappa 
-##              Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
-## treebag 0.3600884 0.4168762 0.4667325 0.4553830 0.4892666 0.5103264    0
-## rf      0.4015397 0.4610000 0.4855997 0.4845989 0.5183479 0.5570861    0
-## c5.0    0.3517922 0.4391821 0.4705864 0.4605871 0.4892659 0.5404548    0
-## gbm     0.3841808 0.4255934 0.4845705 0.4656495 0.5021641 0.5470588    0</code></pre>
-<pre class="r"><code>dotplot(bagging_results)</code></pre>
+summary(bagging_results)
+dotplot(bagging_results)</code></pre>
 <p><img src="/posts/2020-02-10-r-rmarkdown_files/figure-html/bagging_results1.1-1.png" width="672" />
 All those models accuracy is under 80% not so far from the previous logistic model accuracy.</p>
 </div>

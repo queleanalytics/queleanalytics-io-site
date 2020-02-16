@@ -20,7 +20,6 @@ In the perspective of how we could use analytics for his business, I point up a 
 ***Vinho Verde*** is exclusively produced in the demarcated region of Vinho Verde in northwestern Portugal, it is only produced from the indigenous grape varieties of the region, preserving its typicity of aromas and flavors.  From there we will plan ***Data strategy*** based on Company data for business perspectives: ***Real time (Sales Dashboarding, KPI, ROI)***, ***Next best buy***, ***upsell***, ***Customer experience***, ***campaign***,  ...    
 This report is a ***quick and dirty*** analysis to prepare a presentation.
 
-<!-- {r library_and_dataload,  echo=F, error=FALSE, warning=FALSE, message=FALSE} -->
 
 ```{r library_and_dataload,  results="hide", echo=F, error=FALSE, warning=FALSE, message=FALSE}
 
@@ -76,7 +75,6 @@ library("naniar")
 library("e1071")
 library("lattice")
 library("viridisLite")
-#library("viridis")
 library('versions')
 library("data.table")
 library("stringr")
@@ -126,7 +124,7 @@ library("e1071")
 library("lattice")
 ```
 
-### Step 1 : Are all the hypotheses  met for a linear model?
+### Step 1 : Are all the hypothesis  met for a linear model?
 
 
 ```{r Train-Test}
@@ -137,7 +135,7 @@ wine_whitetest  <- new_wine_white[-trainingRowIndex, ]
 ```
 
    
-Let's see if all the hypotheses are met for a linear model.  
+Let's see if all the hypothesis are met for a linear model.  
 Do all the variables entered in the model? 
 
 ```{r message=FALSE, warning=FALSE}
