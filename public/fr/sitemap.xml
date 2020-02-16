@@ -123,21 +123,6 @@
   </url>
   
   <url>
-    <loc>/posts/2020-02-08-r-rmarkdown.nb/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/posts/2020-02-09-r-rmarkdown.nb/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>/posts/2020-02-10-r-rmarkdown.nb/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>/categories/</loc>
     <xhtml:link
                 rel="alternate"
