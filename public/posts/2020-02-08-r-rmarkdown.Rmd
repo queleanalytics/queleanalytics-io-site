@@ -49,14 +49,14 @@ This case study was addressed by different models, where wine quality is modeled
 It seems that the dataset is very clean, with no missing data and clear structure. All variables are numeric. The range of independent variables varies greatly, so when building the model I will normalize them to be within the same range.
 
 
-## My initial thoughts and Hypothesis
+## My initial thoughts and hypothesis
 My main point of interest in this dataset is the 'quality'. I would like to determine which factors determine the quality of a wine.Without analyzing the data, I think with my knowledge in wine that maybe the alcohol, acidity(fixed, volatile or citric) will change the quality of wine based on their values. Also pH as related to acidity may have some effect on the quality. Also this would be an interesting thing to see how the pH is affected by the different acids present in the wine and if the overall pH affects the quality of the wine. 
 
 
 
 
 ```{r loaddev, results='hide',error=FALSE, warning=FALSE, message=FALSE}
-# rm(list = ls())
+
 library("rvest")
 library("dplyr")
 library("foreach")
@@ -121,8 +121,7 @@ It's quick, powerful,interactive,... but the aim here is to explore the data ste
 
 ```{r viewofdatawithExPanD,message=FALSE, warning=FALSE}
 
-print('library(ExPanDaR)
-      ;ExPanD(data_wine_white)')
+print('library(ExPanDaR);ExPanD(data_wine_white)')
 
 
 ```

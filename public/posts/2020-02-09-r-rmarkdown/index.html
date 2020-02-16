@@ -141,7 +141,6 @@
 In the perspective of how we could use analytics for his business, I point up a case widely known in the data science community using analytics to predict wine quality. The case is about predicting the quality of the <strong><em>Vinho Verde</em></strong> wine based on various psychochemical tests only.
 <strong><em>Vinho Verde</em></strong> is exclusively produced in the demarcated region of Vinho Verde in northwestern Portugal, it is only produced from the indigenous grape varieties of the region, preserving its typicity of aromas and flavors. From there we will plan <strong><em>Data strategy</em></strong> based on Company data for business perspectives: <strong><em>Real time (Sales Dashboarding, KPI, ROI)</em></strong>, <strong><em>Next best buy</em></strong>, <strong><em>upsell</em></strong>, <strong><em>Customer experience</em></strong>, <strong><em>campaign</em></strong>, …<br />
 This report is a <strong><em>quick and dirty</em></strong> analysis to prepare a presentation.</p>
-<!-- {r library_and_dataload,  echo=F, error=FALSE, warning=FALSE, message=FALSE} -->
 </div>
 <div id="models" class="section level1">
 <h1>Models</h1>
@@ -168,13 +167,13 @@ library(&quot;ggplot2&quot;)
 library(&quot;naniar&quot;)
 library(&quot;e1071&quot;)
 library(&quot;lattice&quot;)</code></pre>
-<div id="step-1-are-all-the-hypotheses-met-for-a-linear-model" class="section level3">
-<h3>Step 1 : Are all the hypotheses met for a linear model?</h3>
+<div id="step-1-are-all-the-hypothesis-met-for-a-linear-model" class="section level3">
+<h3>Step 1 : Are all the hypothesis met for a linear model?</h3>
 <pre class="r"><code>set.seed(100)  
 trainingRowIndex &lt;- sample(1:nrow(new_wine_white), 0.8*nrow(new_wine_white))  
 wine_whitetrain &lt;- new_wine_white[trainingRowIndex, ]  
 wine_whitetest  &lt;- new_wine_white[-trainingRowIndex, ]</code></pre>
-<p>Let’s see if all the hypotheses are met for a linear model.<br />
+<p>Let’s see if all the hypothesis are met for a linear model.<br />
 Do all the variables entered in the model?</p>
 <pre class="r"><code>linear_for_multicoli_1 &lt;- lm(trans.quality ~ . , wine_whitetrain) # taking all the points.
 summary(linear_for_multicoli_1)</code></pre>

@@ -101,14 +101,6 @@ library("vembedr")
 
 data_wine_white$quality2 <- as.factor(data_wine_white$quality)
 
-# set.seed(3000)
-# spl = sample.split(data_wine_white$quality2, SplitRatio = 0.7)
-# 
-# data_wine_whitetrain = subset(data_wine_white, spl==TRUE)
-# data_wine_whitetest = subset(data_wine_white, spl==FALSE)
-# 
-
-
 data_wine_white$category[data_wine_white$quality <= 5] <- 0
 data_wine_white$category[data_wine_white$quality > 5] <- 1
 
@@ -194,22 +186,9 @@ library(lime)       # for explaining predictions
 library(lattice)
 library(ggplot2)
 library("C50")
-
-# 
-# 
-# library("DALEX")
-# library("iBreakDown")
-# library("randomForest")
 set.seed(1313)
 
-# 
-# 
-# 
-# library("data.table")
-# library("haven")
-# source("age_calc.R")
-# library(tidyr)
-# library(dplyr)
+
 
 
   control <- trainControl(method="repeatedcv", number=10, repeats=3)
@@ -281,7 +260,7 @@ and ***Random Forest***.
 Here a summary of the results in this plot below.  
 
 
-```{r bagging_results1.1, error=FALSE, warning=FALSE, message=FALSE}
+```{r bagging_results1.1, results='hide',error=FALSE, warning=FALSE, message=FALSE}
  # summarize results
 bagging_results <- resamples(list(treebag=fit.treebag, rf=fit.rf,c5.0=fit.c50, gbm=fit.gbm))
 summary(bagging_results)
