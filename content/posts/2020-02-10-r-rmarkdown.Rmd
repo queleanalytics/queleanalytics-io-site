@@ -281,7 +281,7 @@ This final model is said to be stacked on the top of the others, hence the name.
 
 Let's prepare again the data for ensembling somme models.
 
-```{r ensemble_data_for_models_1.1, error=FALSE, warning=FALSE, message=FALSE}
+```{r ensemble_data_for_models_1.1,  results='hide',error=FALSE, warning=FALSE, message=FALSE}
 
 library("caret")
 library("mlbench")
